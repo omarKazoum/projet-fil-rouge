@@ -1,6 +1,6 @@
 # projet-fil-rouge
-## titre du projet: CoiffeurEnLigne
-l'application CoiffeurEnLigne sert à connecter les coiffeurs avec leur clients qui peuvent faire une demmande de services sans a voir à se déplacer et attendre pendant des heurs.
+## titre du projet: "Coiffeur En Ligne"
+l'application "Coiffeur En Ligne" sert à connecter les coiffeurs avec leur clients qui peuvent faire une demmande de services sans a voir à se déplacer et attendre pendant des heurs.
 <ul>
 <li>autant que coiffeur je peux me connecter afin de ajouter/modifer/supprimer mes offres de services.</li>
 <li>autant que coiffeur je peux me connecter afin de consulter/reffuser/accepter mes demandes de services.</li>
