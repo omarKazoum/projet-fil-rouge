@@ -9,6 +9,7 @@ l'application "Coiffeur En Ligne" sert à connecter les coiffeurs avec leur clie
 <li>autant que visiteur/client je peux me connecter afin de demander un services de coiffeur.</li>
 <li>autant que visiteur/client je peux me connecter afin de consulter/annuler mes demandes de services.</li>
 <li>autant que visiteur/client je peux me connecter afin de rechercher un services avec des mots clé ou nom de ville.</li>
+  
   </ul>
 
 
