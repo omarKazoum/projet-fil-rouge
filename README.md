@@ -8,7 +8,6 @@ Coiffeur En Ligne à deux type d'utilisateurs :
         <ul>
           <li>autant que coiffeur je peux me connecter afin de ajouter/modifer/supprimer mes offres de services.</li>
           <li>autant que coiffeur je peux me connecter afin de consulter/reffuser/accepter mes demandes de services.</li>
-          <li>autant que coiffeur je peux me connecter afin de consulter/reffuser/accepter mes demandes de services.</li>
         </ul>
   </li>
   <li>
