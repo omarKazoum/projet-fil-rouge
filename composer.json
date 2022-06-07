@@ -1,0 +1,24 @@
+{
+    "name": "youcode/salonenligne",
+    "description": "l'application \"Salon En Ligne\" sert à connecter les coiffeurs avec leur clients qui peuvent faire une demmande de services sans avoir à se déplacer et attendre pendant des heurs.",
+    "license": "GPL",
+    "autoload": {
+        "psr-4": {
+            "Youcode\\Salonenligne\\": "/"
+        }
+    },
+    "authors": [
+        {
+            "name": "omar kazoum",
+            "email": "omarKazoum96@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "illuminate/database": "10.x-dev"
+    },
+    "scripts": {
+        "start": "php -S localhost:9990 -t public/",
+        "push": "git add . | git commit -m \"updated\"| git push origin"
+    }
+}

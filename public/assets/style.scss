@@ -1,0 +1,277 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
+//@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+$radius:0.5rem;
+$border-width:0.1rem;
+$color-primary: #ee9144;
+$color-black:#000 ;
+$default-size:0.7rem;
+@mixin rounedComponent{
+  box-shadow: 0px 0px 6px 0px #00000042;
+  font-weight: bold;
+  padding: 0.5rem;
+  font-size: $default-size;
+  text-decoration: none;
+  border-style: solid;
+  border-radius: $radius !important;
+  border-width: $border-width !important;
+
+};
+p,div,span{
+  font-size: inherit !important;
+}
+body{
+  border: 0 !important;
+  font-family: 'Poppins', sans-serif;
+  margin: 0px !important;
+  border: solid 10px green;
+  font-size: 10px;
+
+}
+.logo{
+  width: 5rem;
+}
+#navbar{
+  background-color: #fff !important;
+  box-shadow: 1px 1px 1px #cecece;
+}
+.navbar-nav{
+  //flex-direction: row-reverse !important;
+}
+.navbar-collapse{
+  flex-direction: row-reverse;
+}
+.s-btn{
+  cursor: pointer;
+  @include rounedComponent;
+  &.primary{
+    border-color: $color-primary !important;
+    background-color: $color-primary !important;
+    color: #fff !important;
+    &:hover{
+      background-color: #fff !important;
+      color: $color-primary !important;
+    }
+  }
+  &.outlined{
+    border-color: $color-primary !important;
+    color: $color-primary !important;
+    &:hover{
+      background-color: $color-primary !important;
+      color: #fff !important;
+    }
+  }
+  &.normal{
+    background-color: transparent !important;
+    color: $color-black !important;
+    border-color: $color-black !important;
+    &:hover{
+      background-color: $color-black !important;
+      color: #fff !important;
+    }
+  }
+  &:hover{
+    text-decoration: none;
+  }
+}
+.days{
+
+  @include rounedComponent;
+  border-color: $color-primary !important;
+  overflow: hidden;
+  width: fit-content;
+  display: flex;
+  padding: 0px;
+  .day-label{
+    cursor: pointer;
+    padding: 15px;
+    flex:1;
+    color: $color-primary;
+    font-weight: bold;
+    background-color:white;
+    &.active{
+      background-color: $color-primary;
+      color: white;
+    }
+  }
+}
+.time-interval{
+  @include rounedComponent;
+  padding: 0;
+  border-color: $color-primary;
+  max-width: 400px;
+  display: flex;
+  font-weight: bold;
+  input[type='time']{
+    border:0;
+    background-color: $color-primary;
+    color: white;
+    &::-webkit-calendar-picker-indicator{
+      color: white;
+      filter: grayscale(100%);
+    }
+    &:focus{
+      outline: none;
+    }
+  }
+  > *{
+    padding: 15px;
+    flex: 1;
+    text-align: center;
+  }
+}
+.services-container{
+  display: flex;
+  flex-wrap: wrap;
+    justify-content: space-between;
+  .service-card{
+    border:0 !important;
+    @include rounedComponent;
+    width:10%;
+    .service-card-img{
+        width: 100%;
+        object-fit: cover;
+    }
+    .service-owner_info{
+      display: flex;
+      align-items: center;
+      .service-owner-avatar{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .service-owner-name{
+
+      }
+    }
+  }
+}
+.salon-input{
+  flex: 1;
+    @include rounedComponent;
+    border-color: $color-primary !important;
+    width: 100%;
+    padding: 0.5rem;
+    text-decoration: none;
+    border-style: solid;
+    border-radius: $radius*2 !important;
+    border-width: $border-width !important;
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.16);
+    &:focus{
+        outline: 0;
+    }
+}
+input[type="search"]{
+  font-size: $default-size;
+}
+.pick-img{
+  border: 1px solid #aaa ;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 200px;
+  height: 80px;
+  background-color: white;
+  @include rounedComponent;
+  cursor: pointer;
+  padding: 0px 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+  &__preview{
+    box-sizing: border-box;
+    height: 100%;
+    padding-right: 2px;
+  }
+  &__btn {
+    width: 20px;
+    height: 20px;
+    bottom: 0px;
+    right: 0px;
+    padding: 2px;
+    position: absolute;
+  }
+  &__input{
+    display: none;
+  }
+}
+//sidebar
+#sidebar{
+  border: 1px solid #e4e4e4;
+  width: 100%;
+  border-radius: 10px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  ul{
+    overflow: hidden;
+    list-style: none !important;
+    padding: 0;
+    margin: 0;
+    li{
+      cursor: pointer;
+      overflow: hidden;
+      padding: 15px;
+      a{
+        text-decoration: none;
+        font-size: 1rem;
+        color: #000;
+      }
+      &:hover{
+        color: white;
+        background-color: $color-primary;
+        a{
+          color:white;
+        }
+      }
+    }
+  }
+}
+.bg-dark-overlay{
+  background-color: rgba(0, 0, 0, 0.15);
+  /* From https://css.glass */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+.page-title{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: $color-black;
+  &--white{
+    color: white;
+  }
+}
+.form-group{
+  padding:10px;
+  display: flex;
+  justify-content: space-between;
+}
+.salon-label{
+  font-size: $default-size !important;
+  display: flex;
+  align-items: center;
+  gap:10px;
+  flex:1;
+  color:black;
+  font-weight: bold;
+}
+.time-label{
+  background-color: white;
+}
+.time-interval{
+  overflow: hidden;
+}
+.interval-btns{
+  display: flex;;
+}
+.time-intervals-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+@media all and(max-width:1000px){
+  .navbar-nav{
+    flex-direction: row-reverse !important;
+    padding: 1rem !important;
+  }
+}

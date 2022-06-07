@@ -2,6 +2,7 @@
 <h2>Contexte du projet: "Salon En Ligne"</h2>
 l'application "Salon En Ligne" sert à connecter les coiffeurs avec leur clients qui peuvent faire une demmande de services sans avoir à se déplacer et attendre pendant des heurs.
 Salon En Ligne à deux type d'utilisateurs :
+Salon En Ligne à deux type d'utilisateurs :
 <ol>
   <li>
            Utilisateur coiffeur : un utilisateur qui souhaitent étre contacté par de nouveaux clients et recevoir des demandes de services.
