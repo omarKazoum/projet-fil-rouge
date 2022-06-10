@@ -6,6 +6,7 @@ $border-width:0.1rem;
 $color-primary: #ee9144;
 $color-black:#000 ;
 $default-size:0.7rem;
+$color-danger:#e05858;
 @mixin rounedComponent{
   box-shadow: 0px 0px 6px 0px #00000042;
   font-weight: bold;
@@ -49,9 +50,29 @@ body{
     background-color: $color-primary !important;
     color: #fff !important;
     &:hover{
-      background-color: #fff !important;
-      color: $color-primary !important;
+      background-color: darken($color-primary,10%) !important;
+      color: white !important;
     }
+  }
+  &.danger{
+    color: #fff !important;
+    background-color:$color-danger  !important;
+    &:hover{
+      background-color: darken($color-danger,10%) !important;
+      color: white !important;
+    }
+  }
+  &.success{
+    color: white !important;
+    background-color: #008858 !important;
+    &:hover{
+      background-color: darken(#008858,10%) !important;
+      color: white !important;
+    }
+  }
+
+  &.wrap{
+    width:fit-content !important;
   }
   &.outlined{
     border-color: $color-primary !important;
@@ -119,6 +140,9 @@ body{
     flex: 1;
     text-align: center;
   }
+  input:enabled{
+    cursor: pointer;
+  }
 }
 .services-container{
   display: flex;
@@ -148,7 +172,7 @@ body{
   }
 }
 .salon-input{
-  flex: 1;
+    flex: 1;
     @include rounedComponent;
     border-color: $color-primary !important;
     width: 100%;
@@ -242,8 +266,9 @@ input[type="search"]{
   }
 }
 .form-group{
-  padding:10px;
+  padding:5px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }
 .salon-label{
@@ -268,6 +293,9 @@ input[type="search"]{
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+.hidden{
+  display: none !important;
 }
 @media all and(max-width:1000px){
   .navbar-nav{

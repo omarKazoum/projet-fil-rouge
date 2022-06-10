@@ -8,7 +8,7 @@ class User extends Model
 {
     public $timestamps=false;
     protected $fillable = [
-        'first_name', 'last_name','img','user_name','email','role','genre'
+        'first_name', 'last_name','user_name','email','role'
     ];
     protected $hidden = [
         'password_hash','id'
@@ -27,6 +27,9 @@ class User extends Model
     }
     public function customer(){
         return $this->hasOne('app\models\Customer');
+    }
+    public function coiffeur(){
+        return $this->hasOne('app\models\Coiffeur');
     }
 
 }

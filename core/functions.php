@@ -34,10 +34,11 @@ function viewNoSidebar($viewName,...$args){
         $page_content = ob_get_clean();
         require_once '..' . DIRECTORY_SEPARATOR ."app".DIRECTORY_SEPARATOR. "views" . DIRECTORY_SEPARATOR . 'templates/template_navbar_only.php';
 }
- function redirect($endpoint = "/"){
+function redirect($endpoint = "/"){
     header('location:'.getUrlFor($endpoint));
     exit();
  }
+
 function getUrlFor($url_relative_to_root):string{
     if ($url_relative_to_root[0] == "/")
         return "http://" . $_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].$url_relative_to_root;
@@ -53,6 +54,16 @@ function js($fileName){
 function img($imgName){
     return getUrlFor('assets/img/'.$imgName);
 }
+function jsonResponse($responseCode,$responseMessage,$responseData=null){
+    header('Content-Type: application/json');
+    $response=[
+        'code'=>$responseCode,
+        'message'=>$responseMessage,
+        'data'=>$responseData
+    ];
+    echo json_encode($response);
+    exit();
+}
 function requestUrlMatches(...$uris):bool{
     $requestUrl=parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH);
     $requestUrl=stripAllSlashes($requestUrl);
@@ -66,4 +77,24 @@ function stripAllSlashes($text){
     $text=preg_replace('#^/#','',$text);
     $text=preg_replace('#/$#','',$text);
     return $text;
+}
+//TODO:: implement this function
+function uploadImage($imageInputName,$uploadDir,array $allowedExtensions=null,$maxSize=null):bool{
+    if(isset($_FILES[PROFILE_IMG_KEY])) {
+        $target_dir = "../../assets/img/uploads/";
+        $target_file = $target_dir . basename($_FILES[PROFILE_IMG_KEY]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        // Check if image file is a actual image or fake image
+        $check = getimagesize($_FILES[PROFILE_IMG_KEY]["tmp_name"]);
+        echo 'check:</br>';
+        print_r($check);
+        if ($check !== false) {
+            echo "File is an image - " . $check["mime"] . ".";
+            $uploadOk = 1;
+        } else {
+            echo "File is not an image.";
+            $uploadOk = 0;
+        }
+    }
 }

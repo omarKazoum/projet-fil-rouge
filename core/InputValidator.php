@@ -3,16 +3,19 @@ namespace core;
 require_once $_SERVER['DOCUMENT_ROOT']."/../autoloader.php";
 class InputValidator
 {
-    const CLASS_NAME_PATTERN = '^([a-zA-Z0-9]{3,}\s?)([a-zA-Z0-9]{1,}\s?)*$/';
-    public static $errorsArray = [];
+
+    public const WORKING_HOURS_PATTERN='/^\[\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\](\,\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\])*\]$/';
+    public const WORKING_DAYS_PATTERN="/^(\[[0-6](\,[0-6]){0,6}\])?$/";
+    public static $ERRORS_ARRAY_KEY = 'errors';
     //public  const INPUT_VALIDATOR_ERRORS='errors';
     public  const PASSWORD_PATTERN='/^.{6,100}$/';
     public  const EMAIL_PATTERN='/^\w+@\w+(\.\w+)+$/';
     public  const PHONE_PATTERN='/^\+{0,1}(212)|0[658]\d{8}$/';
     public  const NAME_PATTERN='/^([a-zA-Z0-9]{3,}\s?)+$/';
+    public const ADRESS_PATTERN='/^([a-zA-Z0-9]{3,}\s?)+$/';
 
     public static function flushErrors(){
-            self::$errorsArray=[];
+            unset($_SESSION[self::$ERRORS_ARRAY_KEY]);
     }
     /**
      * validates the password against this criteria:
@@ -45,7 +48,14 @@ class InputValidator
         }
         return $res;
     }
-    public static function validatePasswordsMatch( $password1, $password2,$key){
+    public static function validateAdress($adress,$key):bool{
+        $res=preg_match(self::ADRESS_PATTERN,$adress);
+        if(!$res){
+            self::appendError($key,'Invalid address');
+        }
+        return $res;
+    }
+    public static function validatePasswordsMatch( $password1, $password2,$key):bool{
         $isPasswordValid=self::validatePassword($password1,$key);
         $isPasswordsMatch=$password1==$password2 ;
         if(!$isPasswordsMatch){
@@ -53,11 +63,31 @@ class InputValidator
         }
         return $isPasswordsMatch AND $isPasswordValid;
     }
-    public static function validatePhone($phoneNbr,$key){
+    public static function validatePhone($phoneNbr,$key):bool{
         $isPhoneValid=preg_match(self::PHONE_PATTERN,$phoneNbr);;
         if(!$isPhoneValid)
             self::appendError($key,"Invalid phone number:must start with 212 or 0 and then 6,5 or 8 followed by 8 numbers");
         return $isPhoneValid;
+    }
+    public static function validateRole($role,$key){
+        $isRoleValid=in_array($role,array(ROLE_TYPE_COIFFEUR,ROLE_TYPE_CUSTOMER));
+        if(!$isRoleValid)
+            self::appendError($key,"Invalid role value");
+        return $isRoleValid;
+    }
+    public static function validateWorkingDays($workingDays,$key): bool
+    {
+        $isWorkingDaysValid=$workingDays==null || preg_match(self::WORKING_DAYS_PATTERN,$workingDays);
+        if(!$isWorkingDaysValid)
+            self::appendError($key,"Invalid working days value");
+        return $isWorkingDaysValid;
+    }
+    public static function validateWorkingHours($workingHours,$key): bool
+    {
+        $isWorkingHoursValid=preg_match(self::WORKING_HOURS_PATTERN,$workingHours);
+        if(!$isWorkingHoursValid)
+            self::appendError($key,"Invalid working hours value");
+        return $isWorkingHoursValid;
     }
     public static function validateUserNameDoesNotExist( $userName,$key)
     {
@@ -80,21 +110,21 @@ class InputValidator
     {
         $valid=preg_match(self::NAME_PATTERN,$userName);
         if(!$valid)
-            self::$errorsArray[$key]="User name must be 3 letters long and contain only alphanumeric characters";
+            self::$ERRORS_ARRAY_KEY[$key]="User name must be 3 letters long and contain only alphanumeric characters";
         return $valid;
     }
     public static function validateClassName($className, $key)
     {
         $valid=preg_match(self::CLASS_NAME_PATTERN,$className);
         if(!$valid)
-            self::$errorsArray[$key]="Class name must be 3 letters long and contain only alphanumeric characters";
+            self::$ERRORS_ARRAY_KEY[$key]="Class name must be 3 letters long and contain only alphanumeric characters";
         return $valid;
     }
-     static function appendError($key,$message){
-        if(!isset(self::$errorsArray[$key]))
-            self::$errorsArray[$key]="$message";
+    static function appendError($key,$message){
+        if(!isset($_SESSION[self::$ERRORS_ARRAY_KEY][$key]))
+            $_SESSION[self::$ERRORS_ARRAY_KEY][$key]="<li>$message</li>";
         else
-            self::$errorsArray[$key].="\<br\>$message";
+            $_SESSION[self::$ERRORS_ARRAY_KEY][$key].="<li>$message</li>";
     }
 
     /**
@@ -103,10 +133,26 @@ class InputValidator
      * @return false|mixed
      */
     static function error($key){
-        if(isset(self::$errorsArray[$key])){
-            return self::$errorsArray[$key];
+        if(isset($_SESSION[self::$ERRORS_ARRAY_KEY][$key])){
+            return $_SESSION[self::$ERRORS_ARRAY_KEY][$key];
         }else
             return false;
+    }
+    static function hasErrors():bool{
+        return isset($_SESSION[self::$ERRORS_ARRAY_KEY]) && count($_SESSION[self::$ERRORS_ARRAY_KEY]) > 0;
+    }
+
+    public static function getErrors()
+    {
+        return $_SESSION[self::$ERRORS_ARRAY_KEY];
+    }
+
+    public static function validateCity(mixed $cityName, string $CITY_KEY)
+    {
+        $isCityValid=$cityName!=null && $cityName!='' && $cityName!=0;
+        if(!$isCityValid)
+            self::appendError($CITY_KEY,'Invalid city name');
+        return $isCityValid;
     }
 
 

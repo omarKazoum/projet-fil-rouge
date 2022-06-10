@@ -40,4 +40,5 @@ foreach ($files as $file) {
     //echo "found file: " . $file . "\n";
     require_once($file);
 }
+//echo password_hash('123456', PASSWORD_DEFAULT);
 

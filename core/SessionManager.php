@@ -1,10 +1,12 @@
 <?php
 namespace core;
+use app\models\User;
+
 class SessionManager
 {
-    private const  CONNECTED_USER_ID_KEY='connected_user_id';
+    private const  CONNECTED_USER_KEY='connected_user_id';
     private const LAST_LOGGED_IN_TIME_TIME='last_logged_in';
-    private  string $connectedUserId='';
+    private  ?User $connectedUser=null;
     private  bool $isLoggedIn=false;
     private static ?SessionManager $instance=null;
     private function __construct()
@@ -17,9 +19,9 @@ class SessionManager
         session_set_cookie_params($str);
         session_start();
         InputValidator::flushErrors();
-        $this->isLoggedIn=isset($_SESSION[self::CONNECTED_USER_ID_KEY]) AND !empty($_SESSION[self::CONNECTED_USER_ID_KEY]);
+        $this->isLoggedIn=isset($_SESSION[self::CONNECTED_USER_KEY]) AND !empty($_SESSION[self::CONNECTED_USER_KEY]);
         if($this->isLoggedIn){
-            $this->connectedUserId=$_SESSION[self::CONNECTED_USER_ID_KEY];
+            $this->connectedUser=$_SESSION[self::CONNECTED_USER_KEY];
         }
     }
     /**
@@ -28,9 +30,8 @@ class SessionManager
      * @return void
      *
      */
-    public function login(string $userId){
-        global $session_time_out_minutes;
-        $_SESSION[self::CONNECTED_USER_ID_KEY]=$userId;
+    public function login(User $user){
+        $_SESSION[self::CONNECTED_USER_KEY]=$user;
         $_SESSION[self::LAST_LOGGED_IN_TIME_TIME]=date("l,d \of M Y , H:i:s");
     }
     public function logOut(){
@@ -45,8 +46,8 @@ class SessionManager
      * returns the id of the current logged in user
      * @return mixed|string
      */
-    public function getLoggedInUserId(){
-        return $this->connectedUserId;
+    public function getLoggedInUser(){
+        return $this->connectedUser;
     }  /**
      * creates a new instance and stores it in the $instance static variable
      * @return SessionManager

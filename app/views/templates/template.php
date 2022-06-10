@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="<?= css('Normalize.css')?>">
     <link rel="stylesheet" href="<?= css('bootstrap.min.css')?>">
     <link rel="stylesheet" href="<?= css('style.css')?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Salon en ligne</title>
 </head>
 <body>
@@ -27,6 +28,7 @@
       </div>
     </main>
   </div>
+  <script src="<?= js('validator.js') ?>"></script>
   <script src="<?= js('bootstrap.bundle.min.js') ?>"></script>
   <script src="<?= js('script.js') ?>"></script>
   <script src="<?= js('sweetalert2.js') ?>"></script>

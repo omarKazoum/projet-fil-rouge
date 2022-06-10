@@ -6,8 +6,13 @@
                 Se connecter
             </h1>
             <form action="<?= getUrlFor('login')?>" method="post">
+                <?php if(\core\InputValidator::error(LOGIN_ERROR_KEY)){ ?>
+                    <div class="alert alert-danger">
+                        <?= \core\InputValidator::error(LOGIN_ERROR_KEY)?>
+                    </div>
+                <?php } ?>
                 <div class="form-group">
-                    <input type="text" name="<?= USER_NAME_KEY ?>" value="<?= $_POST[ USER_NAME_KEY]??''?>" class="salon-input" placeholder="User name example:Ahmed">
+                    <input type="email" name="<?= EMAIL_KEY ?>" value="<?= $_POST[ EMAIL_KEY]??''?>" class="salon-input" placeholder="Email">
                 </div>
                 <div class="form-group">
                     <input type="password" name="<?= PASSWORD_KEY ?>" value="<?= $_POST[ PASSWORD_KEY]??''?>" class="salon-input" placeholder="Your password ">

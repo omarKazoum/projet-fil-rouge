@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="<?= css('Normalize.css')?>">
     <link rel="stylesheet" href="<?= css('bootstrap.min.css')?>">
     <link rel="stylesheet" href="<?= css('style.css')?>">
+    <link rel="stylesheet" href="<?= css('validator.css')?>">
+
     <title>Salon en ligne</title>
 </head>
 
@@ -26,6 +28,7 @@
 
     </main>
 </div>
+<script src="<?= js('validator.js') ?>"></script>
 <script src="<?= js('bootstrap.bundle.min.js') ?>"></script>
 <script src="<?= js('script.js') ?>"></script>
 <script src="<?= js('sweetalert2.js') ?>"></script>
