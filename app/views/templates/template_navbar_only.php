@@ -32,6 +32,7 @@
 <script src="<?= js('bootstrap.bundle.min.js') ?>"></script>
 <script src="<?= js('script.js') ?>"></script>
 <script src="<?= js('sweetalert2.js') ?>"></script>
+<script src="<?= js('main.js') ?>"></script>
 <script src="<?= js('popper.min.js') ?>"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>

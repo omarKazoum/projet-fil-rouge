@@ -21,6 +21,9 @@ const WORKING_HOURS_KEY='working_hours';
 const WORKING_DAYS_KEY='working_days';
 const PROFILE_IMG_KEY='profile_img';
 //service constants
+const SERVICE_REQUEST_DATE_KEY='service_request_date';
+const SERVICE_REQUEST_TIME_KEY='service_request_time';
+
 const SERVICE_REQUEST_STATUS_PENDING=1;
 const SERVICE_REQUEST_STATUS_ACCEPTED=2;
 const SERVICE_REQUEST_STATUS_REJECTED=3;

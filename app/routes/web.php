@@ -10,10 +10,6 @@ Route::get('error', function () {
 });
 
 Route::get('/',[new app\controllers\HomeController(),'index']);
-Route::get('/about',function () {
-    //view('about', false);
-    echo "this is about page";
-});
 //services
 Route::get('/services',[new app\controllers\ServicesController(),'list']);
 Route::get('/services/add',[new app\controllers\ServicesController(),'addForm']);

@@ -144,7 +144,7 @@ class InputValidator
 
     public static function getErrors()
     {
-        return $_SESSION[self::$ERRORS_ARRAY_KEY];
+        return $_SESSION[self::$ERRORS_ARRAY_KEY]??[];
     }
 
     public static function validateCity(mixed $cityName, string $CITY_KEY)

@@ -2,4 +2,4 @@
 
 use core\Route;
 
-Route::get('/reserve/{service_id}',[new app\controllers\ServicesController(),'reserve']);
+Route::post('services/reserve',[new app\controllers\ServicesController(),'reserve']);

@@ -54,10 +54,10 @@ function js($fileName){
 function img($imgName){
     return getUrlFor('assets/img/'.$imgName);
 }
-function jsonResponse($responseCode,$responseMessage,$responseData=null){
+function jsonResponse($status, $responseMessage, $responseData=null){
     header('Content-Type: application/json');
     $response=[
-        'code'=>$responseCode,
+        'status'=>$status,
         'message'=>$responseMessage,
         'data'=>$responseData
     ];

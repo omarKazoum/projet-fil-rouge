@@ -8,11 +8,9 @@ class Service extends Model
 {
     public $timestamps=false;
     protected $fillable = [
-        'title', 'description', 'price', 'img', 'category_id', 'coiffeur_id'
+        'title', 'description', 'price', 'img', 'category_id', 'coiffeur_id','id'
     ];
-    protected $hidden = [
-        'id'
-    ];
+
     protected $primaryKey= 'id';
     public function user(){
         return $this->belongsTo('app\models\User','coiffeur_id','id');
