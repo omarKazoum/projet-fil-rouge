@@ -1,12 +1,21 @@
+<style>
+    .service-actions > *{
+        flex:1;
+        text-align: center;
+    }
+</style>
 <div class="container-fluid">
     <div class="row">
-    <div class="page-title col-9 col-md-10">
-    Services
+        <div class="page-title col-9 col-md-10">
+        Services
+        </div>
+        <a href="<?= getUrlFor('services/add')?>" class="s-btn primary wrap col-3 col-md-2">
+        <i class="fa fa-plus"></i>
+        Add Service
+        </a>
     </div>
-    <a href="<?= getUrlFor('services/add')?>" class="s-btn primary wrap col-3 col-md-2">
-    <i class="fa fa-plus"></i>
-    Add Service
-    </a>
+    <div class="row p-1">
+        <?php printMessageIfSet();?>
     </div>
         <div class="table-responsive">
         <table class="table table-responsive">
@@ -29,7 +38,7 @@
         <?php  foreach($services as $service){ ?>
         <tr class="service-item">
         <td >
-            <img style="width:100px;height:100px" src="<?=$service->img ?>" alt="<?= $service->title?>">
+            <img style="width:100px;height:100px" src="<?=$service->img!=SERVICE_IMG_NOT_UPLOADED_KEY?uploaded($service->img):img('service_img_place_holder.png') ?>" alt="<?= $service->title?>">
         </td>
         <td class="service-title"><?= $service->title ?></td>
         <td><?= $service->description ?></td>
@@ -37,12 +46,19 @@
         <td><?= $service->category->title ?></td>
         <td><?= $service->user->user_name ?></td>
         <td>
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center service-actions">
 
 
                         <a href="<?= getUrlFor('')?>" class="s-btn primary p-1 d-flex justify-content-center align-items-center" title="Modifier ce service"><i class="fa fa-edit"></i>Modifier</a>
                         <a  href="#" class="s-btn danger p-1 d-flex justify-content-center align-items-center" title="Supprimer ce service"><i class="fa fa-trash" ></i>Supprimer</a>
-                        <a  href="#" class="s-btn success p-1 d-flex justify-content-center align-items-center reserve-btn" data-service-id="<?= $service->id?>"><i class="fa fa-shopping-cart" title="Réserver ce service"></i>Réserver</a>
+                       <?php
+                       if(!$service->serviceRequests->where('client_id',core\SessionManager::getInstance()->getLoggedInUser()->id)->count()){ ?>
+                         <a  href="#" class="s-btn success p-1 d-flex justify-content-center align-items-center reserve-btn" data-service-id="<?= $service->id?>"><i class="fa fa-shopping-cart" title="Réserver ce service"></i>Réserver</a>
+                       <?php } else{ ?>
+                        <div class="p-1">
+                            Réservé
+                        </div>
+                <?php } ?>
             </div>
         </td>
 
@@ -75,6 +91,7 @@
                                 Please select a time.
                             </div>
                         </div>
+                        <?php $service->serviceRequests->where('client_id',\core\SessionManager::getInstance()->getLoggedInUser()->id)?>
                         <button class="s-btn primary reserve-btn">Réserver</button>
                         <a onclick="$('#service-modal').modal('hide');" class="s-btn primary">Cancel</a>
                     </form>
@@ -118,9 +135,13 @@
                        $('#service-modal').modal('hide');
                        if (data.status == '1') {
                            alertSalon('success','',data.message);
-
-                           document.querySelector("")
-
+                            let id= data.data.service.id;
+                            console.log("id from data is : "+id);
+                            let reserveBtn=document.querySelector("[data-service-id='"+id+"']");
+                            let newBtn=document.createElement('div');
+                            newBtn.innerHTML="Réservé";
+                            newBtn.classList.add('p-1');
+                            reserveBtn.parentNode.replaceChild(newBtn,reserveBtn);
                        }
                    }
                });

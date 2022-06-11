@@ -4,7 +4,8 @@
  * @param $viewName
  * @param ...$args the params to pas to the view in form of ['key'=>'value']
  * @return void
- */function view($viewName,bool $wrapInTemplate=true,...$args){
+ */
+function view($viewName,bool $wrapInTemplate=true,...$args){
     foreach ($args as $arg){
         foreach ($arg as $key =>$value)
             $$key=$value;
@@ -40,10 +41,23 @@ function redirect($endpoint = "/"){
  }
 
 function getUrlFor($url_relative_to_root):string{
+    if($url_relative_to_root==='')
+        $url_relative_to_root='/';
     if ($url_relative_to_root[0] == "/")
         return "http://" . $_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].$url_relative_to_root;
     else
         return "http://" . $_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].'/'.$url_relative_to_root;
+}
+function getUrlWithMessage($url_relative_to_root,$message,$type){
+    return getUrlFor($url_relative_to_root.'?message='.$message.'&type='.$type);
+}
+function printMessage($message,$type){
+    echo '<div class="alert alert-'.$type.'">'.$message.'</div>';
+}
+function printMessageIfSet(){
+    if(isset($_GET['message'])){
+        printMessage($_GET['message'],$_GET['type']);
+    }
 }
 function css($filename){
      return getUrlFor('assets/css/'.$filename);
@@ -53,6 +67,9 @@ function js($fileName){
 }
 function img($imgName){
     return getUrlFor('assets/img/'.$imgName);
+}
+function uploaded($fileName){
+    return getUrlFor('assets/'.CONFIG_UPLOADS_FOLDER_NAME.'/'.$fileName);
 }
 function jsonResponse($status, $responseMessage, $responseData=null){
     header('Content-Type: application/json');
@@ -78,23 +95,29 @@ function stripAllSlashes($text){
     $text=preg_replace('#/$#','',$text);
     return $text;
 }
-//TODO:: implement this function
-function uploadImage($imageInputName,$uploadDir,array $allowedExtensions=null,$maxSize=null):bool{
-    if(isset($_FILES[PROFILE_IMG_KEY])) {
-        $target_dir = "../../assets/img/uploads/";
-        $target_file = $target_dir . basename($_FILES[PROFILE_IMG_KEY]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        // Check if image file is a actual image or fake image
-        $check = getimagesize($_FILES[PROFILE_IMG_KEY]["tmp_name"]);
-        echo 'check:</br>';
-        print_r($check);
-        if ($check !== false) {
-            echo "File is an image - " . $check["mime"] . ".";
-            $uploadOk = 1;
+function upload_image($img_old_name=false, $imageInputName):string{
+    $uploadDir=$_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.CONFIG_UPLOADS_FOLDER_NAME.DIRECTORY_SEPARATOR;
+    if(isset($_FILES[ $imageInputName ]) && $_FILES[ $imageInputName ]['error']==0){
+        $temp_path = $_FILES[$imageInputName]['tmp_name'];
+        $img_data = getimagesize($temp_path);
+        $img_type=basename($img_data['mime']);
+        if ($img_data and in_array($img_type, CONFIG_ALLOWED_IMAGE_EXTENSIONS)) {
+            if(!$img_old_name) {
+                $upload_name = $imageInputName.'_' . time() . rand(0, 100000) . '_img.' . $img_type;
+                while (file_exists($uploadDir.$upload_name)) {
+                    $upload_name = $imageInputName.'_' . time() . rand(0, 100000) . '_img.' . $img_type;
+                }
+            }else{
+                $upload_name=$img_old_name;
+            }
+            $upload_path=$uploadDir.$upload_name;
+            if (!move_uploaded_file($temp_path,$upload_path ))
+                \core\InputValidator::appendError($imageInputName, 'Error uploading image');
         } else {
-            echo "File is not an image.";
-            $uploadOk = 0;
+            \core\InputValidator::appendError($imageInputName, 'Only images of types '.implode(',',CONFIG_ALLOWED_IMAGE_EXTENSIONS).' are allowed');
+            return false;
         }
     }
+    return $upload_name??false;
 }
+

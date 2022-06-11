@@ -1,26 +1,32 @@
 <?php
 namespace core;
+use app\models\Category;
+
 require_once $_SERVER['DOCUMENT_ROOT']."/../autoloader.php";
 class InputValidator
 {
 
-    public const WORKING_HOURS_PATTERN='/^\[\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\](\,\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\])*\]$/';
-    public const WORKING_DAYS_PATTERN="/^(\[[0-6](\,[0-6]){0,6}\])?$/";
-    public static $ERRORS_ARRAY_KEY = 'errors';
+    public const ERRORS_KEY = 'errors';
+    public const SERVICE_NAME_PATTERN = "/^(\w+)( (\w+))*$/";
+    private const WORKING_HOURS_PATTERN='/^\[\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\](\,\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\])*\]$/';
+    private const WORKING_DAYS_PATTERN="/^(\[[0-6](\,[0-6]){0,6}\])?$/";
+    const DESCRIPTION_PATTERN = "/^[a-zA-Z0-9\s]{0,255}$/";
+    const PRICE_PATTERN = "/^[0-9]*$/";
+    public static $errors_array=[];
     //public  const INPUT_VALIDATOR_ERRORS='errors';
-    public  const PASSWORD_PATTERN='/^.{6,100}$/';
-    public  const EMAIL_PATTERN='/^\w+@\w+(\.\w+)+$/';
-    public  const PHONE_PATTERN='/^\+{0,1}(212)|0[658]\d{8}$/';
-    public  const NAME_PATTERN='/^([a-zA-Z0-9]{3,}\s?)+$/';
-    public const ADRESS_PATTERN='/^([a-zA-Z0-9]{3,}\s?)+$/';
+    private  const PASSWORD_PATTERN='/^.{6,100}$/';
+    private  const EMAIL_PATTERN='/^\w+@\w+(\.\w+)+$/';
+    private  const PHONE_PATTERN='/^\+{0,1}(212)|0[658]\d{8}$/';
+    private  const NAME_PATTERN='/^([a-zA-Z0-9]{3,}\s?)+$/';
+    private const ADRESS_PATTERN='/^([a-zA-Z0-9]{3,}\s?)+$/';
 
     public static function flushErrors(){
-            unset($_SESSION[self::$ERRORS_ARRAY_KEY]);
+            self::$errors_array=null;
     }
     /**
      * validates the password against this criteria:
      * <ul>
-     *  <li>contain at least 6 characters </li>
+     *  contain at least 6 characters 
      * </ul>
      * @param  $password
      * @return bool
@@ -35,7 +41,7 @@ class InputValidator
     /**
      * validates the password against this criteria:
      * <ul>
-     *  <li>must be a valide email adress</li>
+     *  must be a valide email adress
      * </ul>
      * <b>Regex used <code>^([\w]{1,30})@([\w]{1,20})\.([\w]{1,20})$</code></b>
      * @param  $email
@@ -96,10 +102,12 @@ class InputValidator
             self::appendError($key,"User name already taken");
         return !$exists;
     }
+
     static function areAllFieldsSet(array $fields, $method,array $fieldsCustomNames=[]) :bool{
         $isAllSet=true;
+        $methodArrayName="_$method";
         foreach ($fields as $key=> $field){
-            if(($method =='GET' and !isset($_GET[$field])) or ($method =='POST' and !isset($_POST[$field]) )) {
+            if(($method =='GET' and !isset($_GET[$field])) or ($method =='POST' and !isset($_POST[$field]) ) ){
                 $isAllSet = false;
                 self::appendError($field, ($fieldsCustomNames[$key] ?? $field) . ' is required');
             }
@@ -110,21 +118,15 @@ class InputValidator
     {
         $valid=preg_match(self::NAME_PATTERN,$userName);
         if(!$valid)
-            self::$ERRORS_ARRAY_KEY[$key]="User name must be 3 letters long and contain only alphanumeric characters";
+            self::$errors_array[$key]="User name must be 3 letters long and contain only alphanumeric characters";
         return $valid;
     }
-    public static function validateClassName($className, $key)
-    {
-        $valid=preg_match(self::CLASS_NAME_PATTERN,$className);
-        if(!$valid)
-            self::$ERRORS_ARRAY_KEY[$key]="Class name must be 3 letters long and contain only alphanumeric characters";
-        return $valid;
-    }
+
     static function appendError($key,$message){
-        if(!isset($_SESSION[self::$ERRORS_ARRAY_KEY][$key]))
-            $_SESSION[self::$ERRORS_ARRAY_KEY][$key]="<li>$message</li>";
+        if(!isset(self::$errors_array[$key]))
+            self::$errors_array[$key]="<li>$message</li>";
         else
-            $_SESSION[self::$ERRORS_ARRAY_KEY][$key].="<li>$message</li>";
+            self::$errors_array[$key].="<li>$message</li>";
     }
 
     /**
@@ -133,18 +135,18 @@ class InputValidator
      * @return false|mixed
      */
     static function error($key){
-        if(isset($_SESSION[self::$ERRORS_ARRAY_KEY][$key])){
-            return $_SESSION[self::$ERRORS_ARRAY_KEY][$key];
+        if(isset(self::$errors_array[$key])){
+            return self::$errors_array[$key];
         }else
             return false;
     }
     static function hasErrors():bool{
-        return isset($_SESSION[self::$ERRORS_ARRAY_KEY]) && count($_SESSION[self::$ERRORS_ARRAY_KEY]) > 0;
+        return isset(self::$errors_array) && count(self::$errors_array) > 0;
     }
 
     public static function getErrors()
     {
-        return $_SESSION[self::$ERRORS_ARRAY_KEY]??[];
+        return self::$errors_array??[];
     }
 
     public static function validateCity(mixed $cityName, string $CITY_KEY)
@@ -154,6 +156,39 @@ class InputValidator
             self::appendError($CITY_KEY,'Invalid city name');
         return $isCityValid;
     }
+    /**
+     *  validate service name
+     */
+    public static function validateServiceTitle(mixed $serviceName, string $key){
+        $isServiceNameValid=$serviceName!=null && preg_match(self::SERVICE_NAME_PATTERN,$serviceName);
+        if(!$isServiceNameValid)
+            self::appendError($key,'Nom de service invalid: doit contenir au moins 3 caractères');
+        return $isServiceNameValid;
+    }
+    /**
+     * validate description
+     */
+    public static function validateDescription(mixed $description, string $key)
+    {
+        $isDescriptionValid = $description != null && preg_match(self::DESCRIPTION_PATTERN,$description);
+        if (!$isDescriptionValid)
+            self::appendError($key, 'Description invalide : doit contenir au moins 3 caractères');
+        return $isDescriptionValid;
+    }
 
+    public static function validatePrice(string $price, string $key)
+    {
+        $isPriceValid = preg_match(self::PRICE_PATTERN,$price) && $price >= 10 && $price <= 1000;
+        if (!$isPriceValid)
+            self::appendError($price, 'Prix invalide : doit étre entre 10 et 1000 dh');
+        return $isPriceValid;
+    }
 
+    public static function validateCategoryId(mixed $categoryId, string $key): bool
+    {
+        $isCategoryIdValid = $categoryId != null && Category::find($categoryId);
+        if (!$isCategoryIdValid)
+            self::appendError($categoryId, 'Catégorie invalide');
+        return $isCategoryIdValid;
+    }
 }
