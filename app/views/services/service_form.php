@@ -5,7 +5,7 @@
             </div>
         </div>
         <div class="row">
-            <form action="<?= getUrlFor($service_action=='add'?'services/add':'services/edit') ?>" method="post" class="col-12 " enctype="multipart/form-data">
+            <form action="<?= getUrlFor($service_action=='add'?'services/add':'services/update') ?>" method="post" class="col-12 " enctype="multipart/form-data">
                 <?php
                 if(\core\InputValidator::hasErrors()){?>
                     <div class="alert alert-danger">

@@ -3,6 +3,9 @@
         flex:1;
         text-align: center;
     }
+    table td{
+        vertical-align: middle;
+    }
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -23,22 +26,22 @@
         if(count($services)>0){
         ?>
         <thead>
-        <tr>
-        <th scope="col"></th>
-        <th scope="col">title</th>
-        <th scope="col">description</th>
-        <th scope="col">price</th>
-        <th scope="col">category</th>
-        <th scope="col">nom de coiffeur</th>
-        <th scope="col"></th>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">title</th>
+                <th scope="col">description</th>
+                <th scope="col">price</th>
+                <th scope="col">category</th>
+                <th scope="col">nom de coiffeur</th>
+                <th scope="col"></th>
 
-        </tr>
+            </tr>
         </thead>
         <tbody>
         <?php  foreach($services as $service){ ?>
         <tr class="service-item">
         <td >
-            <img style="width:100px;height:100px" src="<?=$service->img!=SERVICE_IMG_NOT_UPLOADED_KEY?uploaded($service->img):img('service_img_place_holder.png') ?>" alt="<?= $service->title?>">
+            <img style="width:100px;height:80px" src="<?=$service->img!=SERVICE_IMG_NOT_UPLOADED_KEY?uploaded($service->img):img('service_img_place_holder.png') ?>" alt="<?= $service->title?>">
         </td>
         <td class="service-title"><?= $service->title ?></td>
         <td><?= $service->description ?></td>
@@ -47,9 +50,7 @@
         <td><?= $service->user->user_name ?></td>
         <td>
             <div class="d-flex justify-content-center service-actions">
-
-
-                        <a href="<?= getUrlFor('')?>" class="s-btn primary p-1 d-flex justify-content-center align-items-center" title="Modifier ce service"><i class="fa fa-edit"></i>Modifier</a>
+                        <a href="<?= getUrlFor('services/update/'.$service->id)?>" class="s-btn primary p-1 d-flex justify-content-center align-items-center" title="Modifier ce service"><i class="fa fa-edit"></i>Modifier</a>
                         <a  href="#" class="s-btn danger p-1 d-flex justify-content-center align-items-center" title="Supprimer ce service"><i class="fa fa-trash" ></i>Supprimer</a>
                        <?php
                        if(!$service->serviceRequests->where('client_id',core\SessionManager::getInstance()->getLoggedInUser()->id)->count()){ ?>

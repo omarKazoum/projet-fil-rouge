@@ -2,7 +2,7 @@
 /**
  * requires a view by its name <b color="red">please do not use the file extension</b>
  * @param $viewName
- * @param ...$args the params to pas to the view in form of ['key'=>'value']
+ * @param ...$args the params to pass to the view in form of ['key'=>'value']
  * @return void
  */
 function view($viewName,bool $wrapInTemplate=true,...$args){

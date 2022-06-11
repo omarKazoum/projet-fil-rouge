@@ -60,9 +60,18 @@ class ServicesController
         //TODO: set the coiffeur_id to the service
 
     }
+
+    /**
+     * this function is used to update a service
+     * @param $id
+     * @return void
+     */
     public function updateForm($id){
         //TODO: check that a service with that id actually exists
-        view("services/service_form",true,[
+        $service = Service::find($id);
+        if(!$service){
+            redirect('/services');
+        }else view("services/service_form",true,[
             'service_action'=>'update'],['serviceToEdit'=>Service::find($id)]);
     }
     public function updateSubmit(){

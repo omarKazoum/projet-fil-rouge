@@ -1,5 +1,4 @@
 <?php
-//require_once '../../autoloader.php';
 
 use core\Route;
 use app\controllers\HomeController;
@@ -16,15 +15,15 @@ Route::get('/services/add',[new app\controllers\ServicesController(),'addForm'])
 Route::post('/services/add',[new app\controllers\ServicesController(),'addSubmit']);
 Route::get('services/update/{id}',[new app\controllers\ServicesController(),'updateForm']);
 Route::post('services/update',[new app\controllers\ServicesController(),'updateSubmit']);
-//authentication
+//authentication and user
 Route::get('signup',[new app\controllers\HomeController(),'sign_up']);
 Route::get('login',[new app\controllers\HomeController(),'login']);
 Route::post('login',[new app\controllers\HomeController(),'loginSubmit']);
 Route::post('signup',[new app\controllers\HomeController(),'signupSubmit']);
-//TODO:: implement this
 Route::get('logout',[new app\controllers\HomeController(),'logout']);
-Route::get('components',[new app\controllers\HomeController(),'components']);
-Route::get('services',[new app\controllers\ServicesController(), 'list']);
+Route::get('profile',[new app\controllers\HomeController(),'profile']);
 //this is for testing
+Route::get('components',[new app\controllers\HomeController(),'components']);
 Route::get('test',[new app\controllers\TestController(), 'testGet']);
 Route::post('test',[new app\controllers\TestController(),'testPost']);
+

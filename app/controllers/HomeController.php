@@ -13,7 +13,11 @@ class HomeController
 {
     public function index()
     {
-        view('landing',false);
+        if(SessionManager::getInstance()->isLoggedIn()) {
+            redirect('/services');
+        }else{
+            view('landing', false);
+        }
     }
     function sign_up(){
         viewNoSidebar('sign_up');
@@ -81,5 +85,17 @@ class HomeController
     function components(){
         view('components',true);
     }
-
+    function logout(){
+        SessionManager::getInstance()->logout();
+        redirect('/');
+    }
+    function profile()
+    {
+        if (SessionManager::getInstance()->isLoggedIn()) {
+            $user = SessionManager::getInstance()->getLoggedInUser();
+            view('profile', true, ['user' => $user]);
+        } else {
+            redirect('/');
+        }
+    }
 }

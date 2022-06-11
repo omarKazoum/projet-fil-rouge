@@ -9,12 +9,17 @@
 
     <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
         <ul class="navbar-nav gap-1">
+            <?php if(!\core\SessionManager::getInstance()->isLoggedIn()):?>
             <li class="nav-item active">
                 <a class="s-btn outlined" href="<?= getUrlFor('signup')?>">Créer un compte</a>
             </li>
             <li class="nav-item">
                 <a class="s-btn normal" href="<?= getUrlFor('login')?>">Se Connecter</a>
             </li>
+            <?php else:?>
+            <li class="nav-item">
+                <a class="s-btn outlined" href="<?= getUrlFor('profile')?>">Se déconnecter</a>
+            <?php endif;?>
         </ul>
         <form class="form-inline my-2 my-lg-0 d-flex gap-1">
             <input class="form-control mr-sm-2 py-0" type="search" placeholder="Rechercher un service" aria-label="Search">
