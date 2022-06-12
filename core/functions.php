@@ -48,8 +48,8 @@ function getUrlFor($url_relative_to_root):string{
     else
         return "http://" . $_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].'/'.$url_relative_to_root;
 }
-function getUrlWithMessage($url_relative_to_root,$message,$type){
-    return getUrlFor($url_relative_to_root.'?message='.$message.'&type='.$type);
+function getBaseUrlWithMessage($url_relative_to_root,$message,$type):string{
+    return $url_relative_to_root.'?message='.$message.'&type='.$type;
 }
 function printMessage($message,$type){
     echo '<div class="alert alert-'.$type.'">'.$message.'</div>';
@@ -101,6 +101,7 @@ function upload_image($img_old_name=false, $imageInputName):string{
         $temp_path = $_FILES[$imageInputName]['tmp_name'];
         $img_data = getimagesize($temp_path);
         $img_type=basename($img_data['mime']);
+        print_r($img_data);
         if ($img_data and in_array($img_type, CONFIG_ALLOWED_IMAGE_EXTENSIONS)) {
             if(!$img_old_name) {
                 $upload_name = $imageInputName.'_' . time() . rand(0, 100000) . '_img.' . $img_type;

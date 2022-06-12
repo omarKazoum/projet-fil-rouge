@@ -56,8 +56,6 @@ class ServicesController
                 'service_action'=>'add'
             ]);
         }
-        echo "add submit";
-        //TODO: set the coiffeur_id to the service
 
     }
 
@@ -75,10 +73,58 @@ class ServicesController
             'service_action'=>'update'],['serviceToEdit'=>Service::find($id)]);
     }
     public function updateSubmit(){
+        //todo: check that the service id is valid and that the user has permission to do this action
+        // check that data is valid then update otherwise redirect to form with some error message
+        if(!InputValidator::validateServiceId($_POST[SERVICE_ID_KEY],SERVICE_ID_KEY)) {
+            redirect('/services');
+        }else if(InputValidator::areAllFieldsSet([SERVICE_TITLE_KEY,
+                SERVICE_DESCRIPTION_KEY,
+                SERVICE_PRICE_KEY,
+                SERVICE_CATEGORY_ID_KEY,
+                SERVICE_ID_KEY],'POST')
+            AND InputValidator::validateServiceTitle($_POST[SERVICE_TITLE_KEY],SERVICE_TITLE_KEY)
+            AND InputValidator::validateDescription($_POST[SERVICE_DESCRIPTION_KEY],SERVICE_DESCRIPTION_KEY)
+            AND InputValidator::validatePrice($_POST[SERVICE_PRICE_KEY],SERVICE_PRICE_KEY)
+            AND InputValidator::validateCategoryId($_POST[SERVICE_CATEGORY_ID_KEY],SERVICE_CATEGORY_ID_KEY)
+            AND ($_FILES[SERVICE_IMG_KEY]['tmp_name']=='' OR InputValidator::validateImageType(SERVICE_IMG_KEY,SERVICE_IMG_KEY)
+            )) {
+                //everything is ok
+                $service=Service::find($_POST[SERVICE_ID_KEY]);
+                $service->title = $_POST[SERVICE_TITLE_KEY];
+                $service->description = $_POST[SERVICE_DESCRIPTION_KEY];
+                $service->price =  $_POST[SERVICE_PRICE_KEY];
+                $service->category_id = $_POST[SERVICE_CATEGORY_ID_KEY];
+                $service->coiffeur_id = SessionManager::getInstance()->getLoggedInUser()->id;
+                $img_path = upload_image($service->img!=SERVICE_IMG_NOT_UPLOADED_KEY?$service->img:false, SERVICE_IMG_KEY);
+                $service->img = $img_path ? $img_path : $service->img;
+                $service->save();
+                redirect('/services');
+        }else{
+            //something is wrong with the inputs
+            view("services/service_form",true,[
+                'service_action'=>'update'
+            ],['serviceToEdit'=>Service::find($_POST[SERVICE_ID_KEY])]);
+        }
+
         echo "update submitted";
     }
-    public function delete(){
-        echo "delete";
+    public function delete($serviceId){
+        //todo validate that the setvice with that id actually exists
+        // and that the user is the owner of the service
+        // or is an admin
+        $service = Service::find($serviceId);
+        $sm= SessionManager::getInstance();
+        if(
+            $service
+            && $sm->isLoggedIn()
+            &&( $sm->getLoggedInUser()->role==ROLE_TYPE_ADMIN
+            OR $sm->getLoggedInUser()->id==$service->coiffeur_id)
+        ){
+            $service->delete();
+            redirect(getBaseUrlWithMessage('/services','service bien supprimé','success'));
+        }else{
+            redirect(getBaseUrlWithMessage('/services','action non autorisé','danger'));
+        }
     }
     public function reserve(){
         $user =SessionManager::getInstance()->getLoggedInUser();

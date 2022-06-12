@@ -3,11 +3,7 @@
 use core\Route;
 use app\controllers\HomeController;
 
-//declare here your endpoints and their corresponding controller methods
-Route::get('error', function () {
-    view('404', false);
-});
-
+//TODO::declare here your endpoints and their corresponding controller methods
 Route::get('/',[new app\controllers\HomeController(),'index']);
 //services
 Route::get('/services',[new app\controllers\ServicesController(),'list']);
@@ -15,6 +11,10 @@ Route::get('/services/add',[new app\controllers\ServicesController(),'addForm'])
 Route::post('/services/add',[new app\controllers\ServicesController(),'addSubmit']);
 Route::get('services/update/{id}',[new app\controllers\ServicesController(),'updateForm']);
 Route::post('services/update',[new app\controllers\ServicesController(),'updateSubmit']);
+Route::get('services/delete/{id}',[new app\controllers\ServicesController(),'delete']);
+//reservations
+Route::get('/reservations',[new app\controllers\ReservationsController(),'list']);
+
 //authentication and user
 Route::get('signup',[new app\controllers\HomeController(),'sign_up']);
 Route::get('login',[new app\controllers\HomeController(),'login']);

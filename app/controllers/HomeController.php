@@ -93,7 +93,8 @@ class HomeController
     {
         if (SessionManager::getInstance()->isLoggedIn()) {
             $user = SessionManager::getInstance()->getLoggedInUser();
-            view('profile', true, ['user' => $user]);
+            echo 'profile ';
+            //view('profile', true, ['user' => $user]);
         } else {
             redirect('/');
         }

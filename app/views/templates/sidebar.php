@@ -6,12 +6,12 @@
       </a>
     </li>
  <li class="px-0 px-md-1 <?= core\Route::isRequestFor('') ? 'active' : '' ?>">
-      <a href="<?= getUrlFor('student') ?>"  data-bs-toggle="tooltip" data-bs-placement="right" title="Mes services">
+      <a href="<?= getUrlFor('services') ?>"  data-bs-toggle="tooltip" data-bs-placement="right" title="Mes services">
         <i class="bi bi-collection"></i>
       </a>
     </li>
  <li class="px-0 px-md-1 <?= core\Route::isRequestFor('') ? 'active' : '' ?>">
-      <a href="<?= getUrlFor('') ?>"  data-bs-toggle="tooltip" data-bs-placement="right" title="Réservations">
+      <a href="<?= getUrlFor('reservations') ?>"  data-bs-toggle="tooltip" data-bs-placement="right" title="Réservations">
         <i class="bi bi-calendar-week"></i>
       </a>
     </li>

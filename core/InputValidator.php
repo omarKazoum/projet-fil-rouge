@@ -1,17 +1,18 @@
 <?php
 namespace core;
 use app\models\Category;
+use app\models\Service;
 
 require_once $_SERVER['DOCUMENT_ROOT']."/../autoloader.php";
 class InputValidator
 {
 
     public const ERRORS_KEY = 'errors';
-    public const SERVICE_NAME_PATTERN = "/^(\w+)( (\w+))*$/";
+    public const SERVICE_TITLE_PATTERN = "/^(\w{3,})( (\w{3,}))*$/";
     private const WORKING_HOURS_PATTERN='/^\[\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\](\,\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\])*\]$/';
     private const WORKING_DAYS_PATTERN="/^(\[[0-6](\,[0-6]){0,6}\])?$/";
     const DESCRIPTION_PATTERN = "/^[a-zA-Z0-9\s]{0,255}$/";
-    const PRICE_PATTERN = "/^[0-9]*$/";
+    const PRICE_PATTERN = "/^[0-9]{2,4}$/";
     public static $errors_array=[];
     //public  const INPUT_VALIDATOR_ERRORS='errors';
     private  const PASSWORD_PATTERN='/^.{6,100}$/';
@@ -160,7 +161,7 @@ class InputValidator
      *  validate service name
      */
     public static function validateServiceTitle(mixed $serviceName, string $key){
-        $isServiceNameValid=$serviceName!=null && preg_match(self::SERVICE_NAME_PATTERN,$serviceName);
+        $isServiceNameValid=$serviceName!=null && preg_match(self::SERVICE_TITLE_PATTERN,$serviceName);
         if(!$isServiceNameValid)
             self::appendError($key,'Nom de service invalid: doit contenir au moins 3 caractères');
         return $isServiceNameValid;
@@ -190,5 +191,24 @@ class InputValidator
         if (!$isCategoryIdValid)
             self::appendError($categoryId, 'Catégorie invalide');
         return $isCategoryIdValid;
+    }
+
+    public static function validateServiceId(mixed $serviceId,$key)
+    {
+        $service=Service::find($serviceId);
+        $isServiceIdValide=$service!=null;
+        if(!$isServiceIdValide)
+            InputValidator::appendError($key,'service avec id '.$serviceId." n'existe pas!");
+        return $isServiceIdValide;
+    }
+
+    public static function validateImageType(mixed $imageInputId, string $key):bool{
+        $temp_name=$_FILES[$imageInputId]['tmp_name'];
+        if($temp_name!='')
+        $type=explode('/',getimagesize($temp_name)['mime'])[1];
+        $isImageTypeValide=$temp_name!=''&&isset($_FILES[$imageInputId])&&in_array($type,CONFIG_ALLOWED_IMAGE_EXTENSIONS);
+        if(!$isImageTypeValide)
+            self::appendError($key,"L'image doit être au format jpg, jpeg, png ou gif");
+        return $isImageTypeValide;
     }
 }

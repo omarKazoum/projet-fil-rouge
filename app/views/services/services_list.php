@@ -51,7 +51,7 @@
         <td>
             <div class="d-flex justify-content-center service-actions">
                         <a href="<?= getUrlFor('services/update/'.$service->id)?>" class="s-btn primary p-1 d-flex justify-content-center align-items-center" title="Modifier ce service"><i class="fa fa-edit"></i>Modifier</a>
-                        <a  href="#" class="s-btn danger p-1 d-flex justify-content-center align-items-center" title="Supprimer ce service"><i class="fa fa-trash" ></i>Supprimer</a>
+                        <a href="<?= getUrlFor('services/delete/'.$service->id) ?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center" title="Supprimer ce service"><i class="fa fa-trash" ></i>Supprimer</a>
                        <?php
                        if(!$service->serviceRequests->where('client_id',core\SessionManager::getInstance()->getLoggedInUser()->id)->count()){ ?>
                          <a  href="#" class="s-btn success p-1 d-flex justify-content-center align-items-center reserve-btn" data-service-id="<?= $service->id?>"><i class="fa fa-shopping-cart" title="Réserver ce service"></i>Réserver</a>
