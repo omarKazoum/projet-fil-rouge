@@ -1,4 +1,4 @@
-document.querySelectorAll('.s-btn.danger').forEach((btn) => {
+document.querySelectorAll('.s-btn.confirm').forEach((btn) => {
     btn.addEventListener('click', (e) => {
         e.preventDefault();
         Swal.fire({

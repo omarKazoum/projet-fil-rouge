@@ -12,20 +12,23 @@
     <title>Salon en ligne</title>
 </head>
 <body class="">
-  <div class="container-fluid">
-    <header class="row ">
+
+  <div class="container-fluid g-0">
+    <header class="row mx-0">
       <!---Create navbar--->
       <?php require_once "navbar.php" ?>
       <!------Header------>
     </header>
-    <main class="row pt-2 no-gutters">
+    <main class="row pt-2 g-1 mx-0">
       <!--Sidebar of all page-->
       <div class="col-1 col-lg-1 ps-0">
-        <?php     require_once "sidebar.php" ?>
+        <?php  require_once "sidebar.php" ?>
       </div>
       <div class="content col-11 col-lg-11">
+          <div class="content-wrapper">
         <!--Content of laoding page--->
-        <?= $page_content ?>
+                <?= $page_content ?>
+          </div>
       </div>
     </main>
   </div>

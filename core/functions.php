@@ -121,4 +121,18 @@ function upload_image($img_old_name=false, $imageInputName):string{
     }
     return $upload_name??false;
 }
+function getServiceStatusString(int $status):string{
+    switch ($status){
+        case SERVICE_REQUEST_STATUS_ACCEPTED:
+            return 'Accepté';
+        case SERVICE_REQUEST_STATUS_REJECTED:
+            return 'Refusé';
+        case SERVICE_REQUEST_STATUS_PENDING:
+            return 'En attente';
+        case SERVICE_REQUEST_STATUS_CANCELED:
+            return 'Annulé';
+            default:
+                return 'Inconnu';
+    }
+}
 

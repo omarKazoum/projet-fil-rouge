@@ -30,6 +30,17 @@ const SERVICE_PRICE_KEY='service_price';
 const SERVICE_CATEGORY_ID_KEY='category_id';
 const SERVICE_IMG_KEY='service_img';
 const SERVICE_IMG_NOT_UPLOADED_KEY='not_uploaded';
+//service status
 const SERVICE_REQUEST_STATUS_PENDING=1;
 const SERVICE_REQUEST_STATUS_ACCEPTED=2;
 const SERVICE_REQUEST_STATUS_REJECTED=3;
+const SERVICE_REQUEST_STATUS_CANCELED=4;
+//endpoints labels
+const SERVICES_ENDPOINT_LABEL='services';
+const SERVICE_REQUESTS_ENDPOINT_LABEL='service_requests';
+const USERS_ENDPOINT_LABEL='users';
+const CATEGORIES_ENDPOINT_LABEL='categories';
+const AUTHENTICATION_ENDPOINT_LABEL='authentication';
+//category constants
+const CATEGORY_ID_KEY='category_id';
+const CATEGORY_TITLE_KEY='category_title';

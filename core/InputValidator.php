@@ -8,11 +8,12 @@ class InputValidator
 {
 
     public const ERRORS_KEY = 'errors';
-    public const SERVICE_TITLE_PATTERN = "/^(\w{3,})( (\w{3,}))*$/";
+    public const SERVICE_TITLE_PATTERN = "/^([\w ]{3,})$/";
     private const WORKING_HOURS_PATTERN='/^\[\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\](\,\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\])*\]$/';
     private const WORKING_DAYS_PATTERN="/^(\[[0-6](\,[0-6]){0,6}\])?$/";
     const DESCRIPTION_PATTERN = "/^[a-zA-Z0-9\s]{0,255}$/";
     const PRICE_PATTERN = "/^[0-9]{2,4}$/";
+    const CATEGORY_TITLE_PATTERN = "/^([\w ]{3,})$/";
     public static $errors_array=[];
     //public  const INPUT_VALIDATOR_ERRORS='errors';
     private  const PASSWORD_PATTERN='/^.{6,100}$/';
@@ -35,7 +36,7 @@ class InputValidator
     public static function validatePassword( $password,$key):bool{
         $res=preg_match(self::PASSWORD_PATTERN,$password);
         if(!$res){
-            self::appendError($key,"Password must be at least 8 characters long");
+            self::appendError($key,"Password must be  at least 8 characters long");
         }
         return $res;
     }
@@ -210,5 +211,13 @@ class InputValidator
         if(!$isImageTypeValide)
             self::appendError($key,"L'image doit être au format jpg, jpeg, png ou gif");
         return $isImageTypeValide;
+    }
+
+    public static function validateCategoryTitle(mixed $title, string $key)
+    {
+        $isCategoryTitleValid = $title != null && preg_match(self::CATEGORY_TITLE_PATTERN,$title);
+        if (!$isCategoryTitleValid)
+            self::appendError($key, 'Nom de catégorie invalide : doit contenir au moins 3 caractères');
+        return $isCategoryTitleValid;
     }
 }

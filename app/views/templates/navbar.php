@@ -18,7 +18,7 @@
             </li>
             <?php else:?>
             <li class="nav-item">
-                <a class="s-btn outlined" href="<?= getUrlFor('profile')?>">Se déconnecter</a>
+                <a class="s-btn outlined" href="<?= getUrlFor('logout')?>">Se déconnecter</a>
             <?php endif;?>
         </ul>
         <form class="form-inline my-2 my-lg-0 d-flex gap-1">

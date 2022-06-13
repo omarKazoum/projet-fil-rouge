@@ -2,12 +2,12 @@
 if (!defined('AUTO_LOAD_CALLED')) {
     spl_autoload_register('load_class');
 
+    require_once 'app/utils/Constants.php';
     require_once 'app/configs/config.php';
     require_once 'core/functions.php';
     require_once 'app/routes/web.php';
     require_once 'app/routes/api.php';
     require_once 'vendor/autoload.php';
-    require_once 'app/utils/Constants.php';
 
     define('AUTO_LOAD_CALLED', true);
 }

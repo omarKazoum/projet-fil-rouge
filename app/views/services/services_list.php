@@ -1,21 +1,14 @@
-<style>
-    .service-actions > *{
-        flex:1;
-        text-align: center;
-    }
-    table td{
-        vertical-align: middle;
-    }
-</style>
 <div class="container-fluid">
     <div class="row">
         <div class="page-title col-9 col-md-10">
         Services
         </div>
-        <a href="<?= getUrlFor('services/add')?>" class="s-btn primary wrap col-3 col-md-2">
-        <i class="fa fa-plus"></i>
-        Add Service
-        </a>
+        <?php if(\core\SessionManager::getInstance()->getLoggedInUser()->role!=ROLE_TYPE_CUSTOMER){ ?>
+            <a href="<?= getUrlFor('services/add')?>" class="s-btn primary wrap col-3 col-md-2">
+                <i class="fa fa-plus"></i>Add Service
+            </a>
+        <?php }?>
+    </div>
     </div>
     <div class="row p-1">
         <?php printMessageIfSet();?>
@@ -49,17 +42,23 @@
         <td><?= $service->category->title ?></td>
         <td><?= $service->user->user_name ?></td>
         <td>
-            <div class="d-flex justify-content-center service-actions">
-                        <a href="<?= getUrlFor('services/update/'.$service->id)?>" class="s-btn primary p-1 d-flex justify-content-center align-items-center" title="Modifier ce service"><i class="fa fa-edit"></i>Modifier</a>
-                        <a href="<?= getUrlFor('services/delete/'.$service->id) ?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center" title="Supprimer ce service"><i class="fa fa-trash" ></i>Supprimer</a>
-                       <?php
-                       if(!$service->serviceRequests->where('client_id',core\SessionManager::getInstance()->getLoggedInUser()->id)->count()){ ?>
-                         <a  href="#" class="s-btn success p-1 d-flex justify-content-center align-items-center reserve-btn" data-service-id="<?= $service->id?>"><i class="fa fa-shopping-cart" title="Réserver ce service"></i>Réserver</a>
-                       <?php } else{ ?>
-                        <div class="p-1">
-                            Réservé
-                        </div>
-                <?php } ?>
+            <div class="action-btns-wrapper">
+                <div class="action-btns">
+                            <!-- supprimer-->
+                            <?php if(\core\SessionManager::getInstance()->getLoggedInUser()->role!=ROLE_TYPE_CUSTOMER){ ?>
+                                <a href="<?= getUrlFor('services/update/'.$service->id)?>" class="s-btn primary p-1 d-flex justify-content-center align-items-center" title="Modifier ce service"><i class="fa fa-edit"></i>Modifier</a>
+                            <?php } ?>
+                            <?php if($service->serviceRequests->count()<1){ ?>
+                                <a href="<?= getUrlFor('services/delete/'.$service->id) ?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center confirm" title="Supprimer ce service"><i class="fa fa-trash" ></i>Supprimer</a>
+                            <?php }
+                           if(!$service->serviceRequests->where('client_id',core\SessionManager::getInstance()->getLoggedInUser()->id)->count()){ ?>
+                                <a  href="#" class="s-btn success p-1 d-flex justify-content-center align-items-center reserve-btn" data-service-id="<?= $service->id?>"><i class="fa fa-shopping-cart" title="Réserver ce service"></i>Réserver</a>
+                           <?php } else{ ?>
+                                <div class="p-1">
+                                    Réservé
+                                </div>
+                    <?php } ?>
+                </div>
             </div>
         </td>
 
@@ -147,12 +146,7 @@
                    }
                });
            }else{
-              /* Swal.fire({
-                   icon: 'error',
-                   title: 'Error de validation',
-                   text: 'une date et une heure sont obligatoire!',
-                   footer: ''
-               });*/
+
                alertSalon('error','Error de validation','une date et une heure sont obligatoire!');
                console.log("form is not valid");
            }

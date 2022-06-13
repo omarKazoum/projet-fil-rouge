@@ -22,10 +22,10 @@
         <!------Header------>
     </header>
     <main class="row pt-2 no-gutters">
-
+        <div class="content-wrapper">
             <!--Content of laoding page--->
             <?= $page_content ?>
-
+        </div>
     </main>
 </div>
 <script src="<?= js('validator.js') ?>"></script>

@@ -91,6 +91,7 @@ class HomeController
     }
     function profile()
     {
+        //TODO finish this function
         if (SessionManager::getInstance()->isLoggedIn()) {
             $user = SessionManager::getInstance()->getLoggedInUser();
             echo 'profile ';

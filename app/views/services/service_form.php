@@ -18,29 +18,29 @@
                 <div class="form-group">
                     <label for="<?= SERVICE_TITLE_KEY?>">Nom du service</label>
                     <input
-                            data-validate="1"
-                            data-validate-pattern="<?= stripAllSlashes(\core\InputValidator::SERVICE_TITLE_PATTERN) ?>"
-                            data-validate-message="le nom du service doit contenir entre 3 et 20 characters"
-                            type="text" class="form-control" id="<?= SERVICE_TITLE_KEY?>" name="<?= SERVICE_TITLE_KEY?>" value="<?= $serviceToEdit->title?? $_POST[SERVICE_TITLE_KEY]??''?>">
+                        data-validate="1"
+                        data-validate-pattern="<?= stripAllSlashes(\core\InputValidator::SERVICE_TITLE_PATTERN) ?>"
+                        data-validate-message="le nom du service doit contenir entre 3 et 20 characters"
+                        type="text" class="form-control" id="<?= SERVICE_TITLE_KEY?>" name="<?= SERVICE_TITLE_KEY?>" value="<?= $serviceToEdit->title?? $_POST[SERVICE_TITLE_KEY]??''?>">
                 </div>
                 <!-- service description-->
                 <div class="form-group">
                     <label for="<?= SERVICE_DESCRIPTION_KEY?>">Description du service</label>
                     <textarea
-                            data-validate="1"
-                            data-validate-pattern="<?= stripAllSlashes(\core\InputValidator::DESCRIPTION_PATTERN) ?>"
-                            data-validate-message="Description invalide : doit contenir au moins 3 caractères"
-                            class="form-control" id="<?= SERVICE_DESCRIPTION_KEY?>" name="<?= SERVICE_DESCRIPTION_KEY?>" rows="3"><?= $serviceToEdit->description?? $_POST[SERVICE_DESCRIPTION_KEY]??''?></textarea>
+                        data-validate="1"
+                        data-validate-pattern="<?= stripAllSlashes(\core\InputValidator::DESCRIPTION_PATTERN) ?>"
+                        data-validate-message="Description invalide : doit contenir au moins 3 caractères"
+                        class="form-control" id="<?= SERVICE_DESCRIPTION_KEY?>" name="<?= SERVICE_DESCRIPTION_KEY?>" rows="3"><?= $serviceToEdit->description?? $_POST[SERVICE_DESCRIPTION_KEY]??''?></textarea>
                 </div>
                 <!-- service price-->
                 <div class="form-group">
                     <label for="<?= SERVICE_PRICE_KEY?>">Prix du service</label>
                     <input
-                            data-validate="1"
-                            data-validate-pattern="<?= stripAllSlashes(\core\InputValidator::PRICE_PATTERN) ?>"
-                            data-validate-message="le prix du service doit être entre 10 et 1000 dh"
-                            min="10" max="1000"
-                            type="number" class="form-control" id="<?= SERVICE_PRICE_KEY?>" name="<?= SERVICE_PRICE_KEY?>" value="<?= $serviceToEdit->price?? $_POST[SERVICE_PRICE_KEY]??10?>">
+                        data-validate="1"
+                        data-validate-pattern="<?= stripAllSlashes(\core\InputValidator::PRICE_PATTERN) ?>"
+                        data-validate-message="le prix du service doit être entre 10 et 1000 dh"
+                        min="10" max="1000"
+                        type="number" class="form-control" id="<?= SERVICE_PRICE_KEY?>" name="<?= SERVICE_PRICE_KEY?>" value="<?= $serviceToEdit->price?? $_POST[SERVICE_PRICE_KEY]??10?>">
                 </div>
                 <!-- service category-->
                 <div class="form-group">

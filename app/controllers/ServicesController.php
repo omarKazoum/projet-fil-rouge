@@ -67,7 +67,7 @@ class ServicesController
     public function updateForm($id){
         //TODO: check that a service with that id actually exists
         $service = Service::find($id);
-        if(!$service){
+        if(!$service OR  SessionManager::getInstance()->getLoggedInUser()->role!=ROLE_TYPE_CUSTOMER){
             redirect('/services');
         }else view("services/service_form",true,[
             'service_action'=>'update'],['serviceToEdit'=>Service::find($id)]);
@@ -131,7 +131,7 @@ class ServicesController
         $status=0;
         $message="";
         $data=[];
-        if($user->role==ROLE_TYPE_CUSTOMER){
+        if($user && $user->role==ROLE_TYPE_CUSTOMER){
             //if connected user is a customer
             if(InputValidator::areAllFieldsSet(['service_id',SERVICE_REQUEST_DATE_KEY,SERVICE_REQUEST_TIME_KEY],'POST') && $service=Service::find($_POST['service_id'])) {
                 //if service id is valid;

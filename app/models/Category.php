@@ -17,5 +17,8 @@ class Category extends Model
     public function customer(){
         return $this->hasMany('app\models\ServiceRequest');
     }
+    function services(){
+        return $this->hasMany('app\models\Service');
+    }
 
 }
