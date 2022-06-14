@@ -106,17 +106,16 @@
                     </div>
                     <label for="coiffeur" class="salon-label">
                         Coiffeur
-                        <input type="radio"  value="<?= ROLE_TYPE_COIFFEUR ?>" name="<?= ROLE_KEY?>" id="coiffeur">
+                        <input type="radio"  <?php if(isset($_POST[ROLE_KEY])){echo $_POST[ROLE_KEY]==ROLE_TYPE_COIFFEUR?"checked":'';} ?> value="<?= ROLE_TYPE_COIFFEUR ?>" name="<?= ROLE_KEY?>" id="coiffeur">
                     </label>
                   <label for="coiffeur" class="salon-label">
                       Client
-                      <input type="radio" checked value="<?= ROLE_TYPE_CUSTOMER ?>" name="<?= ROLE_KEY?>" id="client">
+                      <input type="radio" checked value="<?= ROLE_TYPE_CUSTOMER ?>" <?php if(isset($_POST[ROLE_KEY])){echo $_POST[ROLE_KEY]==ROLE_TYPE_CUSTOMER?"checked":'';} ?> name="<?= ROLE_KEY?>" id="client">
                 </label>
                 </div>
                 <div class="coiffeur-option hidden">
                     <div class="form-group">
-                        <input
-                                name="<?= STORE_NAME_KEY ?>" id="<?= STORE_NAME_KEY ?>" class="salon-input" placeholder="taper le nom de votre salon">
+                        <input name="<?= STORE_NAME_KEY ?>" id="<?= STORE_NAME_KEY ?>" class="salon-input" placeholder="taper le nom de votre salon">
                     </div>
                     <div class="form-group">
                         <div class="salon-label">
@@ -148,7 +147,7 @@
                 </div>
                 <div class="form-group">
                     <button class="s-btn primary my-2 my-sm-0 w-100">
-                        Se connecter
+                        S'inscrire
                     </button>
                 </div>
             </form>
