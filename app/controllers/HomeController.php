@@ -105,7 +105,7 @@ class HomeController
     }
     function loginSubmit(){
         //TODO login the user and redirect to the dashboard
-        if(!isset($_POST[EMAIL_KEY])){
+        if(!InputValidator::areAllFieldsSet([EMAIL_KEY,PASSWORD_KEY],'POST')){
             viewNoSidebar('login');
             exit();
         }else{
