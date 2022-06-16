@@ -3,7 +3,7 @@ document.querySelectorAll('.s-btn.confirm').forEach((btn) => {
         e.preventDefault();
         Swal.fire({
             icon: 'warning',
-            title: 'Do you want to delete this row?',
+            title: 'Do you want to delete this item?',
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',

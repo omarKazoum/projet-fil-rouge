@@ -41,9 +41,9 @@
   <script src="<?= js('popper.min.js') ?>"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script>
-  $(document).on('click', 'ul li', function() {
-    $(this).addClass('active').siblings().removeClass('active')
-  })
+      $(document).on('click', 'ul li', function() {
+        $(this).addClass('active').siblings().removeClass('active')
+      })
   </script>
 <script src="<?= js('confirm.js')?>"></script>
 
