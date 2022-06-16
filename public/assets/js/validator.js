@@ -68,19 +68,16 @@ const validateInput=(input)=>{
         regex=regexFromElement;
 
     let isInputValide ;
-    if(input.hasAttribute('data-validate-match')){
+    if(input.hasAttribute('data-validate-skip')){
+        isInputValide=true;
+    }else if(input.hasAttribute('data-validate-match')){
         console.log('input has a validate match attribute');
         console.log(input);
         let elementToMatch= document.getElementById(input.dataset.validateMatch);
         isInputValide=input.value==elementToMatch.value && elementToMatch.value.match(regex);
     }else if(input.hasAttribute('data-validate-pattern')){
         isInputValide= null!=input.value.match(regex);
-    }/*if(input.hasAttribute('data-validate-not-equal')){
-        console.log('input has a validate not equal attribute');
-        console.log(input);
-        isInputValide=input.value!=input.dataset.validateNotEqual;
-        console.log(isInputValide);
-    }*/else
+    }else
         isInputValide=true;
     console.log("isInputValide:"+isInputValide);
     enableErrorOn(input, !isInputValide,input.dataset.validateMessage);
