@@ -326,6 +326,7 @@ input[type=search] {
   flex: 1;
   color: black;
   font-weight: bold;
+  padding-left: 0.5rem;
 }
 
 .time-label {
@@ -375,6 +376,14 @@ input[type=search] {
 
 table td {
   vertical-align: middle;
+}
+
+.text-primary {
+  color: #ee9144 !important;
+}
+
+.bold {
+  font-weight: bold !important;
 }
 
 @media all and (max-width: 1000px) {
