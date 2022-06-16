@@ -3,6 +3,9 @@
 $role=\core\SessionManager::getInstance()->getLoggedInUser()->role;
 ?>
 <div class="container-fluid">
+
+  <?php  printMessageIfSet();?>
+
     <div class="row">
         <div class="page-title col-9 col-md-10">
             <?php if(\core\SessionManager::getInstance()->getLoggedInUser()->role==ROLE_TYPE_ADMIN):?>
@@ -43,11 +46,18 @@ $role=\core\SessionManager::getInstance()->getLoggedInUser()->role;
                                 <div class="action-btns">
                                 <?php if($role!=ROLE_TYPE_CUSTOMER && $reservation->status!=SERVICE_REQUEST_STATUS_ACCEPTED):?>
                                     <!--confirm -->
-                                    <a data-action="confirm" data-confirm-msg="Etes vous sur de vouloir accepter cette réservation ?" href="<?= getUrlFor('reservations/confirm/'.$reservation->id)?>" class="s-btn success p-1 d-flex justify-content-center align-items-center salon-confirm" title="Confirmer cette réservation"><i class="fa-solid fa-check"></i>Confirmer</a>
+                                    <a data-action="confirm" data-confirm-msg="Etes vous sur de vouloir accepter cette réservation ?"
+                                       href="<?= getUrlFor('reservations/confirm/'.$reservation->id)?>"
+                                       class="s-btn success p-1 d-flex justify-content-center align-items-center salon-confirm"
+                                       title="Confirmer cette réservation">
+                                        <i class="fa-solid fa-check"></i>Confirmer
+                                    </a>
                                 <?php endif;?>
                                 <?php if($role!=ROLE_TYPE_CUSTOMER && $reservation->status!=SERVICE_REQUEST_STATUS_REJECTED):?>
                                 <!-- reject -->
-                                <a data-action="reject" data-confirm-msg="Etes vous sur de vouloir refuser cette réservation ?" href="<?= getUrlFor('reservations/reject/'.$reservation->id) ?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center salon-confirm" title="Refuser cette réservation"><i class="fa-solid fa-circle-xmark" ></i>Refuser</a>
+                                <a data-action="reject" data-confirm-msg="Etes vous sur de vouloir refuser cette réservation ?" href="<?= getUrlFor('reservations/reject/'.$reservation->id) ?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center salon-confirm" title="Refuser cette réservation">
+                                    <i class="fa-solid fa-circle-xmark" ></i>Refuser
+                                </a>
                                 <?php endif;?>
                                 <?php if($role!=ROLE_TYPE_COIFFEUR && $reservation->status!=SERVICE_REQUEST_STATUS_CANCELED && $reservation->status!=SERVICE_REQUEST_STATUS_ACCEPTED):?>
                                 <!-- cancel -->
@@ -64,6 +74,9 @@ $role=\core\SessionManager::getInstance()->getLoggedInUser()->role;
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
+            <?php else: ?>
+                <div class="alert alert-info">
+                    <strong>Info:</strong> Aucune réservation pour le moment.
             <?php endif; ?>
         </table>
     </div>

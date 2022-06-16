@@ -2,15 +2,36 @@
 
 namespace app\controllers;
 
+use app\models\Service;
 use app\models\ServiceRequest;
 use core\InputValidator;
 use core\SessionManager;
+use Illuminate\Support\Facades\DB;
 
 class ReservationsController
 {
     public function list()
     {
-        view('reservations/list',true,['reservations'=>ServiceRequest::all()]);
+        $reservations=ServiceRequest::all();
+        $user=SessionManager::getInstance()->getLoggedInUser();
+        switch($user->role){
+            case ROLE_TYPE_ADMIN:
+                $reservations=ServiceRequest::all();
+                break;
+            case ROLE_TYPE_COIFFEUR:
+                $services=Service::where('coiffeur_id',$user->id)->get();
+                $serviceIds=[];
+                foreach($services as $service){
+                    $serviceIds[]=$service->id;
+                }
+                //TODO fix this
+                $reservations=ServiceRequest::query()->whereIn('service_id',$serviceIds)->get();
+                break;
+            case ROLE_TYPE_CUSTOMER:
+                $reservations=ServiceRequest::all()->where('client_id',$user->id);
+                break;
+        }
+        view('reservations/list',true,['reservations'=>$reservations]);
     }
     public function cancel($service_request_id)
     {
