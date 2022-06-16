@@ -1,4 +1,4 @@
-const REGEX_USER_NAME=/^[a-zA-Z0-9]{3,30}$/
+const REGEX_USER_NAME=/^[a-zA-Z0-9]{3,30}$/;
 const REGEX_PASSWORD=/^.{6,}$/;
 /**
  *
