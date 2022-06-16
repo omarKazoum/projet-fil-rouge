@@ -101,7 +101,9 @@ class Route{
     public static function isRequestFor($endpointLabel):bool{
         return self::$currentRuquestLabel===$endpointLabel;
     }
-
+    static function getCurrentRequestLabel(){
+        return self::$currentRuquestLabel;
+    }
     /**
      * @param $str
      * @return string|string[]|null
