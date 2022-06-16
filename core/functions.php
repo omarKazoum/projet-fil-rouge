@@ -39,7 +39,6 @@ function redirect($endpoint = "/"){
     header('location:'.getUrlFor($endpoint));
     exit();
  }
-
 function getUrlFor($url_relative_to_root):string{
     if($url_relative_to_root==='')
         $url_relative_to_root='/';
@@ -135,4 +134,76 @@ function getServiceStatusString(int $status):string{
                 return 'Inconnu';
     }
 }
+function getUserImageUrl($user){
+    $url=img('profile-avatar.svg');
+    if($user->role==ROLE_TYPE_COIFFEUR){
+        $imgFromDb=$user->coiffeur->img;
+         $url=$imgFromDb!=IMG_NOT_UPLOADED_KEY ? uploaded($imgFromDb) : img('profile-avatar.svg');
+    }else if($user->role==ROLE_TYPE_CUSTOMER){
+        $imgFromDb=$user->customer->img;
+        $url=$imgFromDb!=IMG_NOT_UPLOADED_KEY ? uploaded($imgFromDb) : img('profile-avatar.svg');
+    }
+    return $url;
+}
+function getCapsule(){
 
+    $capsule = new Illuminate\Database\Capsule\Manager();
+    $capsule->addConnection([
+        "driver" => DB_DRIVER,
+        "host" => DB_HOST_NAME,
+        "database" => DB_NAME,
+        "username" => DB_USER_NAME,
+        "password" => DB_PASSWORD
+    ]);
+    $capsule->setAsGlobal();
+    $capsule->bootEloquent();
+
+    return $capsule;
+}
+function getRoleText($role){
+    switch ($role){
+        case ROLE_TYPE_ADMIN:
+            return 'Administrateur';
+        case ROLE_TYPE_COIFFEUR:
+            return 'Coiffeur';
+        case ROLE_TYPE_CUSTOMER:
+            return 'Client';
+        default:
+            return 'Inconnu';
+    }
+}
+function getSearchActionLink(){
+    $url=getUrlFor('/services');
+    switch(\core\Route::getCurrentRequestLabel()){
+        case SERVICES_ENDPOINT_LABEL:
+            $url='/services';
+            break;
+        case SERVICE_REQUESTS_ENDPOINT_LABEL:
+            $url='/reservations';
+            break;
+        case CATEGORIES_ENDPOINT_LABEL:
+            $url='/categories';
+            break;
+        default:
+            $url='/';
+            throw new \Exception('Unknown search action');
+            break;
+    }
+    return $url;
+}
+function getSearchPlaceHolderText(){
+    switch(\core\Route::getCurrentRequestLabel()){
+        case SERVICES_ENDPOINT_LABEL:
+            return 'Rechercher un service';
+            break;
+        case SERVICE_REQUESTS_ENDPOINT_LABEL:
+            return 'Rechercher une réservation';
+            break;
+        case CATEGORIES_ENDPOINT_LABEL:
+            return 'Rechercher une catégorie';
+            break;
+        default:
+            return 'Rechercher';
+            break;
+    }
+}
