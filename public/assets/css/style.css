@@ -386,6 +386,18 @@ table td {
   font-weight: bold !important;
 }
 
+.badge {
+  margin: 1px;
+}
+.badge.badge-primary {
+  background-color: #ee9144 !important;
+  color: white !important;
+}
+.badge.badge-secondary {
+  background-color: #000000 !important;
+  color: white !important;
+}
+
 @media all and (max-width: 1000px) {
   .navbar-nav {
     flex-direction: row-reverse !important;
