@@ -12,7 +12,15 @@ class CategoriesController
 
     public function index()
     {
-        view('categories/list',true,['categories'=>Category::all()]);
+        $resultsCount=0;
+        $categories=null;
+        if(isset($_GET['search'])) {
+            $sw=$_GET['search'];
+            $categories = Category::query()->where('title','LIKE' ,"%$sw%")->get();
+        }else
+            $categories = Category::all();
+        $resultsCount=count($categories);
+        view('categories/list',true,['categories'=>$categories]);
     }
     function save()
     {

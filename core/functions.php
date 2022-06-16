@@ -94,7 +94,7 @@ function stripAllSlashes($text){
     $text=preg_replace('#/$#','',$text);
     return $text;
 }
-function upload_image($img_old_name=false, $imageInputName):string{
+function upload_image( $imageInputName,$img_old_name=false):string{
     $uploadDir=$_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.CONFIG_UPLOADS_FOLDER_NAME.DIRECTORY_SEPARATOR;
     if(isset($_FILES[ $imageInputName ]) && $_FILES[ $imageInputName ]['error']==0){
         $temp_path = $_FILES[$imageInputName]['tmp_name'];
@@ -137,10 +137,11 @@ function getServiceStatusString(int $status):string{
 function getUserImageUrl($user){
     $url=img('profile-avatar.svg');
     if($user->role==ROLE_TYPE_COIFFEUR){
-        $imgFromDb=$user->coiffeur->img;
+        $imgFromDb=\app\models\Coiffeur::query()->where('user_id',$user->id)->img;
          $url=$imgFromDb!=IMG_NOT_UPLOADED_KEY ? uploaded($imgFromDb) : img('profile-avatar.svg');
     }else if($user->role==ROLE_TYPE_CUSTOMER){
-        $imgFromDb=$user->customer->img;
+        $customer=\app\models\Customer::query()->where('user_id',$user->id)->first();
+        $imgFromDb=$customer->img;
         $url=$imgFromDb!=IMG_NOT_UPLOADED_KEY ? uploaded($imgFromDb) : img('profile-avatar.svg');
     }
     return $url;
@@ -173,23 +174,23 @@ function getRoleText($role){
     }
 }
 function getSearchActionLink(){
-    $url=getUrlFor('/services');
-    switch(\core\Route::getCurrentRequestLabel()){
-        case SERVICES_ENDPOINT_LABEL:
-            $url='/services';
-            break;
-        case SERVICE_REQUESTS_ENDPOINT_LABEL:
-            $url='/reservations';
-            break;
-        case CATEGORIES_ENDPOINT_LABEL:
-            $url='/categories';
-            break;
-        default:
-            $url='/';
-            throw new \Exception('Unknown search action');
-            break;
-    }
-    return $url;
+
+        $url=getUrlFor('/services');
+        switch(\core\Route::getCurrentRequestLabel()){
+            case SERVICES_ENDPOINT_LABEL:
+                $url='/services';
+                break;
+            case SERVICE_REQUESTS_ENDPOINT_LABEL:
+                $url='/services';
+                break;
+            case CATEGORIES_ENDPOINT_LABEL:
+                $url='/categories';
+                break;
+            default:
+                $url='not set';
+                break;
+        }
+        return $url;
 }
 function getSearchPlaceHolderText(){
     switch(\core\Route::getCurrentRequestLabel()){
@@ -197,7 +198,7 @@ function getSearchPlaceHolderText(){
             return 'Rechercher un service';
             break;
         case SERVICE_REQUESTS_ENDPOINT_LABEL:
-            return 'Rechercher une réservation';
+            return 'Rechercher un service';
             break;
         case CATEGORIES_ENDPOINT_LABEL:
             return 'Rechercher une catégorie';

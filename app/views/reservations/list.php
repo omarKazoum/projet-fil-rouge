@@ -15,6 +15,7 @@ $role=\core\SessionManager::getInstance()->getLoggedInUser()->role;
             <?php endif;?>
         </div>
     </div>
+    <?php require_once dirname(__FILE__) .'/../templates/search_header.php'?>
     <div class="row p-1">
         <?php printMessageIfSet();?>
     </div>

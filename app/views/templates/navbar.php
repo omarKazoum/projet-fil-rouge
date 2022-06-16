@@ -5,7 +5,7 @@ $user=$sm->getLoggedInUser();
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
     <a class="navbar-brand d-flex align-items-center" href="<?= getUrlFor('/')?>">
-        <img src="<?= img('salon_en_lign.jpeg')?>" alt="salon en ligne logo" class="logo">
+        <img src="<?= img('salon_en_ligne.jpeg')?>" alt="salon en ligne logo" class="logo">
         <p class="d-lg-none">Salon en ligne</p>
     </a>
     <button class="navbar-toggler s-btn primary" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,10 +37,18 @@ $user=$sm->getLoggedInUser();
 
             <?php endif;?>
         </ul>
-        <form class="form-inline my-2 my-lg-0 d-flex gap-1" action="<?= getSearchActionLink() ?>" method="GET">
-            <input class="form-control mr-sm-2 py-0" name="search" type="search" placeholder="<?= getSearchPlaceHolderText() ?>" aria-label="Search">
-            <button class="s-btn primary my-2 my-sm-0" type="submit">Rechercher</button>
-        </form>
+        <?php if(in_array(\core\Route::getCurrentRequestLabel(),[SERVICE_REQUESTS_ENDPOINT_LABEL,SERVICES_ENDPOINT_LABEL,CATEGORIES_ENDPOINT_LABEL])){?>
+            <form class="form-inline my-2 my-lg-0 d-flex gap-1" action="<?= getSearchActionLink() ?>" method="GET">
+                <input class="form-control mr-sm-2 py-0"
+                       name="search"
+                       type="search"
+                       placeholder="<?= getSearchPlaceHolderText() ?>"
+                       aria-label="Search"
+                       value="<?= $_GET['search']??'' ?>"
+                >
+                <button class="s-btn primary my-2 my-sm-0" type="submit">Rechercher</button>
+            </form>
+        <?php }?>
     </div>
     <script>
         document.querySelectorAll(".navbar-toggler").forEach(function(btn){

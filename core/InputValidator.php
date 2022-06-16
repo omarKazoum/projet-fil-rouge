@@ -2,6 +2,7 @@
 namespace core;
 use app\models\Category;
 use app\models\Service;
+use app\models\User;
 
 require_once $_SERVER['DOCUMENT_ROOT']."/../autoloader.php";
 class InputValidator
@@ -14,13 +15,14 @@ class InputValidator
     const DESCRIPTION_PATTERN = "/^[a-zA-Z0-9\s]{0,255}$/";
     const PRICE_PATTERN = "/^[0-9]{2,4}$/";
     const CATEGORY_TITLE_PATTERN = "/^([\w ]{3,})$/";
+    const CITY_NAME_REGEX = "/^([\w ]{3,})$/";
     public static $errors_array=[];
     //public  const INPUT_VALIDATOR_ERRORS='errors';
-    private  const PASSWORD_PATTERN='/^.{6,100}$/';
-    private  const EMAIL_PATTERN='/^\w+@\w+(\.\w+)+$/';
-    private  const PHONE_PATTERN='/^\+{0,1}(212)|0[658]\d{8}$/';
-    private  const NAME_PATTERN='/^([a-zA-Z0-9]{3,}\s?)+$/';
-    private const ADRESS_PATTERN='/^([a-zA-Z0-9]{3,}\s?)+$/';
+    public  const PASSWORD_PATTERN='/^.{6,100}$/';
+    public  const EMAIL_PATTERN='/^\w+@\w+(\.\w+)+$/';
+    public  const PHONE_PATTERN='/^\+{0,1}(212)|0[658]\d{8}$/';
+    public  const NAME_PATTERN='/^([a-zA-Z0-9_]{3,}\s?)+([a-zA-Z0-9_]{2,}\s?)*$/';
+    private const ADRESS_PATTERN='/^([a-zA-Z0-9_]{3,}\s?)+([a-zA-Z0-9_]{2,}\s?)*$/';
 
     public static function flushErrors(){
             self::$errors_array=null;
@@ -56,7 +58,14 @@ class InputValidator
         }
         return $res;
     }
-    public static function validateAdress($adress,$key):bool{
+    public static function validateEmailNotTaken($email,$key):bool{
+        $exists=User::query()->where('email',$email)->count()>0;
+        if($exists){
+            self::appendError($key,'Email already used');
+        }
+        return !$exists;
+    }
+    public static function validateQuartier($adress, $key):bool{
         $res=preg_match(self::ADRESS_PATTERN,$adress);
         if(!$res){
             self::appendError($key,'Invalid address');
@@ -116,11 +125,11 @@ class InputValidator
         }
         return $isAllSet;
     }
-    public static function validateUserName($userName, $key)
+    public static function validateName($name, $key, $inputLabel)
     {
-        $valid=preg_match(self::NAME_PATTERN,$userName);
+        $valid=preg_match(self::NAME_PATTERN,$name);
         if(!$valid)
-            self::$errors_array[$key]="User name must be 3 letters long and contain only alphanumeric characters";
+            self::$errors_array[$key]=$inputLabel." doit contenir au moins 3 caractères";
         return $valid;
     }
 
@@ -151,11 +160,11 @@ class InputValidator
         return self::$errors_array??[];
     }
 
-    public static function validateCity(mixed $cityName, string $CITY_KEY)
+    public static function validateCity(mixed $cityName, string $key)
     {
-        $isCityValid=$cityName!=null && $cityName!='' && $cityName!=0;
+        $isCityValid=$cityName!=null && preg_match(self::CITY_NAME_REGEX,$cityName);
         if(!$isCityValid)
-            self::appendError($CITY_KEY,'Invalid city name');
+            self::appendError($key,'Invalid city name');
         return $isCityValid;
     }
     /**
@@ -178,6 +187,12 @@ class InputValidator
         return $isDescriptionValid;
     }
 
+    /**
+     *
+     * @param string $price
+     * @param string $key
+     * @return bool
+     */
     public static function validatePrice(string $price, string $key)
     {
         $isPriceValid = preg_match(self::PRICE_PATTERN,$price) && $price >= 10 && $price <= 1000;
@@ -205,9 +220,16 @@ class InputValidator
 
     public static function validateImageType(mixed $imageInputId, string $key):bool{
         $temp_name=$_FILES[$imageInputId]['tmp_name'];
-        if($temp_name!='')
-        $type=explode('/',getimagesize($temp_name)['mime'])[1];
-        $isImageTypeValide=$temp_name!=''&&isset($_FILES[$imageInputId])&&in_array($type,CONFIG_ALLOWED_IMAGE_EXTENSIONS);
+        $imageUploaded=$temp_name!='';
+        if($imageUploaded)
+            $type=explode('/',getimagesize($temp_name)['mime'])[1];
+        $isImgSet=isset($_FILES[$imageInputId]);
+
+        $isFormatSupported=in_array($type,CONFIG_ALLOWED_IMAGE_EXTENSIONS);
+
+        $isImageTypeValide=(!$imageUploaded OR (
+            $isImgSet && $isFormatSupported
+        ))  ;
         if(!$isImageTypeValide)
             self::appendError($key,"L'image doit être au format jpg, jpeg, png ou gif");
         return $isImageTypeValide;

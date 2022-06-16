@@ -42,7 +42,7 @@
         <img src="<?= img('landing_bg.jpg')?>" alt="service-img" class="service-card-img">
         <div class="service-card-content">
             <h3 class="service-owner_info">
-                <img src="<?= img('salon_en_lign.jpeg')?>" alt="" class="service-owner-avatar">
+                <img src="<?= img('salon_en_ligne.jpeg')?>" alt="" class="service-owner-avatar">
                 <p class="service-owner-name">Jack Man</p>
             </h3>
             <h3 class="service-card-title">

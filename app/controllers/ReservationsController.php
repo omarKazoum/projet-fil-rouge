@@ -24,7 +24,6 @@ class ReservationsController
                 foreach($services as $service){
                     $serviceIds[]=$service->id;
                 }
-                //TODO fix this
                 $reservations=ServiceRequest::query()->whereIn('service_id',$serviceIds)->get();
                 break;
             case ROLE_TYPE_CUSTOMER:

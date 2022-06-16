@@ -1,10 +1,12 @@
-document.querySelector('#pick-img').addEventListener('change',(e)=>{
-    let reader=new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload=function(readerEvent){
-        document.querySelector('.pick-img__preview').src=readerEvent.target.result;
-    }
-});
+document.querySelectorAll('.pick-img__input').forEach(btn=>{
+    btn.addEventListener('change',(e)=>{
+            let reader=new FileReader();
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onload=function(readerEvent){
+                document.querySelector('.pick-img__preview').src=readerEvent.target.result;
+            }
+        });
+})
 //for days of the wek picker
 let selectedDays=[];
 let daysContainer=document.querySelector('.days');
@@ -143,21 +145,41 @@ document.querySelectorAll('.time-interval input').forEach(input=>{
 });
 //for the role
 document.getElementsByName('role').forEach(radioBtn=>{
-    radioBtn.addEventListener('change',(e)=> {
+    // if (radioBtn.value ==3) {
+    //     document.querySelector('.coiffeur-option').classList.remove('hidden');
+    // }else{
+    //     document.querySelector('.coiffeur-option').classList.add('hidden');
+    // }
+     radioBtn.addEventListener('change',(e)=> {
         console.log("radio btn status changed");
         console.log(radioBtn);
         if (radioBtn.value ==3) {
             document.querySelector('.coiffeur-option').classList.remove('hidden');
+            enableValidationFromCoiffeurInputs(true);
         }else{
+            enableValidationFromCoiffeurInputs(false);
             document.querySelector('.coiffeur-option').classList.add('hidden');
         }
     });
 })
+const enableValidationFromCoiffeurInputs=(b)=>{
+
+        document.querySelectorAll(".coiffeur-option input[data-validate=\"1\"]").forEach(input=>{
+            if(!b) {
+                input.setAttribute("data-validate-skip", "1");
+            }else{
+                input.removeAttribute("data-validate-skip");
+            }
+        });
+}
 //for cities
-const cities_data=["Casablanca","El Kelaa des Srarhna","Fès","Tangier","Marrakech","Sale","Rabat","Meknès","Kenitra","Agadir","Oujda-Angad","Tétouan","Taourirt    ","Temara","Safi","Laâyoune","Mohammedia","Kouribga","Béni Mellal","El Jadid","Ait Melloul","Nador","Taza","Settat","Barrechid","Al Khmissat"    ,"Inezgane","Ksar El Kebir","Larache","Guelmim","Khénifra","Berkane","Bouskoura","Al Fqih Ben Çalah","Oued Zem","Sidi Slimane","Errachidia","    Guercif","Oulad Teïma","Ad Dakhla","Ben Guerir","Wislane","Tiflet","Lqoliaa","Taroudannt","Sefrou","Essaouira","Fnidq","Ait Ali","Sidi Qacem"    ,"Tiznit","Moulay Abdallah","Tan-Tan","Warzat","Youssoufia","Sa’ada","Martil","Aïn Harrouda","Skhirate","Ouezzane","Sidi Yahya Zaer","Benslim    ane","Al Hoceïma","Beni Enzar","M’diq","Sidi Bennour","Midalt","Azrou","Ain El Aouda","Beni Yakhlef","Semara","Ad Darwa","Al Aaroui","QasbatTadla","Boujad","Jerada","Chefchaouene","Mrirt","Sidi Mohamed Lahmar","Tineghir","El Aïoun","Azemmour","Temsia","Zoumi","Laouamra","Zagora","Ait Ourir","Sidi Bibi","Aziylal","Sidi Yahia El Gharb","Biougra","Taounate","Bouznika","Aourir","Zaïo","Aguelmous","El Hajeb","Mnasra","Mediouna","Zeghanghane","Imzouren","Loudaya","Oulad Zemam","Bou Ahmed","Tit Mellil","Arbaoua","Douar Oulad Hssine","Bahharet Oulad Ayyad","MechraaBel Ksiri","Mograne","Dar Ould Zidouh","Asilah","Demnat","Lalla Mimouna","Fritissa","Arfoud","Tameslouht","Bou Arfa","Sidi Smai’il","Taza","Souk et Tnine Jorf el Mellah","Mehdya","Oulad Hammou","Douar Oulad Aj-jabri","Aïn Taoujdat","Dar Bel Hamri","Chichaoua","Tahla","Bellaa","Oulad Yaïch","Ksebia","Tamorot","Moulay Bousselham","Sabaa Aiyoun","Bourdoud","Aït Faska","Boureït","Lamzoudia","Oulad Said","Missour","Ain Aicha","Zawyat ech Cheïkh","Bouknadel","El Ghiate","Safsaf","Ouaoula","Douar Olad. Salem","Oulad Tayeb","Echemmaia Est","Oulad Barhil","Douar ’Ayn Dfali","Setti Fatma","Skoura","Douar Ouled Ayad","Zawyat an Nwaçer","Khenichet-sur Ouerrha","Ayt Mohamed","Gueznaia","Oulad Hassoune","BniFrassen","Tifariti","Zawit Al Bour"];
+const cities_data=["Ouarzazate","Casablanca","El Kelaa des Srarhna","Fès","Tangier","Marrakech","Sale","Rabat","Meknès","Kenitra","Agadir","Oujda-Angad","Tétouan","Taourirt    ","Temara","Safi","Laâyoune","Mohammedia","Kouribga","Béni Mellal","El Jadid","Ait Melloul","Nador","Taza","Settat","Barrechid","Al Khmissat"    ,"Inezgane","Ksar El Kebir","Larache","Guelmim","Khénifra","Berkane","Bouskoura","Al Fqih Ben Çalah","Oued Zem","Sidi Slimane","Errachidia","    Guercif","Oulad Teïma","Ad Dakhla","Ben Guerir","Wislane","Tiflet","Lqoliaa","Taroudannt","Sefrou","Essaouira","Fnidq","Ait Ali","Sidi Qacem"    ,"Tiznit","Moulay Abdallah","Tan-Tan","Warzat","Youssoufia","Sa’ada","Martil","Aïn Harrouda","Skhirate","Ouezzane","Sidi Yahya Zaer","Benslim    ane","Al Hoceïma","Beni Enzar","M’diq","Sidi Bennour","Midalt","Azrou","Ain El Aouda","Beni Yakhlef","Semara","Ad Darwa","Al Aaroui","QasbatTadla","Boujad","Jerada","Chefchaouene","Mrirt","Sidi Mohamed Lahmar","Tineghir","El Aïoun","Azemmour","Temsia","Zoumi","Laouamra","Zagora","Ait Ourir","Sidi Bibi","Aziylal","Sidi Yahia El Gharb","Biougra","Taounate","Bouznika","Aourir","Zaïo","Aguelmous","El Hajeb","Mnasra","Mediouna","Zeghanghane","Imzouren","Loudaya","Oulad Zemam","Bou Ahmed","Tit Mellil","Arbaoua","Douar Oulad Hssine","Bahharet Oulad Ayyad","MechraaBel Ksiri","Mograne","Dar Ould Zidouh","Asilah","Demnat","Lalla Mimouna","Fritissa","Arfoud","Tameslouht","Bou Arfa","Sidi Smai’il","Taza","Souk et Tnine Jorf el Mellah","Mehdya","Oulad Hammou","Douar Oulad Aj-jabri","Aïn Taoujdat","Dar Bel Hamri","Chichaoua","Tahla","Bellaa","Oulad Yaïch","Ksebia","Tamorot","Moulay Bousselham","Sabaa Aiyoun","Bourdoud","Aït Faska","Boureït","Lamzoudia","Oulad Said","Missour","Ain Aicha","Zawyat ech Cheïkh","Bouknadel","El Ghiate","Safsaf","Ouaoula","Douar Olad. Salem","Oulad Tayeb","Echemmaia Est","Oulad Barhil","Douar ’Ayn Dfali","Setti Fatma","Skoura","Douar Ouled Ayad","Zawyat an Nwaçer","Khenichet-sur Ouerrha","Ayt Mohamed","Gueznaia","Oulad Hassoune","BniFrassen","Tifariti","Zawit Al Bour"];
 cities_select=document.querySelector("select[name='city']");
 cities_data.forEach(city=>{
     const option=document.createElement('option');
+    if(cities_select.dataset.oldValue==city)
+        option.setAttribute('selected',"true");
+
     option.value=city;
     option.innerText=city;
     cities_select.appendChild(option);

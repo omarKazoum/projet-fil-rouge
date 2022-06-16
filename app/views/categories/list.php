@@ -8,6 +8,7 @@
             Ajouter une catégorie
         </a>
     </div>
+    <?php require_once dirname(__FILE__) .'/../templates/search_header.php'?>
     <div class="row p-1">
         <?php printMessageIfSet();?>
     </div>
@@ -32,7 +33,7 @@
                                 <div class="action-btns">
                                         <!-- supprimer-->
                                         <?php if($categorie->services->count()<1){ ?>
-                                        <a data-action="confirm" data-confirm-msg="Etes vous sur de vouloir supprimer cette catégorie ?" href="<?= getUrlFor('categories/delete/'.$categorie->id)?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center salon-confirm" title="Confirmer cette réservation"><i class="fa fa-delete"></i>Supprimer</a>
+                                        <a data-action="confirm" data-confirm-msg="Etes vous sur de vouloir supprimer cette catégorie ?" href="<?= getUrlFor('categories/delete/'.$categorie->id)?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center salon-confirm" title="Confirmer cette réservation"><i class="fa fa-trash"></i>Supprimer</a>
                                         <?php } ?>
                                         <!-- modifier-->
                                         <a href="<?= getUrlFor('categories/update/'.$categorie->id)?>" class="s-btn primary p-1 d-flex justify-content-center align-items-center edit" title="Modifier cette catégorie"><i class="fa fa-edit"></i>Modifier</a>

@@ -36,25 +36,26 @@ class HomeController
                 and InputValidator::validateName($_POST[FIRST_NAME_KEY], FIRST_NAME_KEY, 'Votre prénom')
                 and InputValidator::validateName($_POST[LAST_NAME_KEY], LAST_NAME_KEY, 'Votre nom')
                 and InputValidator::validateName($_POST[USER_NAME_KEY], USER_NAME_KEY, 'Votre nom d\'utilisateur')
+                and InputValidator::validateEmailNotTaken($_POST[EMAIL_KEY], EMAIL_KEY)
                 and InputValidator::validateEmail($_POST[EMAIL_KEY], EMAIL_KEY)
                 and InputValidator::validatePassword($_POST[PASSWORD_KEY], PASSWORD_KEY)
                 and InputValidator::validatePasswordsMatch($_POST[PASSWORD_KEY], $_POST[PASSWORD_REPEAT_KEY], PASSWORD_REPEAT_KEY)
                 and InputValidator::validateImageType(PROFILE_IMG_KEY, PROFILE_IMG_KEY)
                 and (
-                    (
-                        $_POST[ROLE_KEY] == ROLE_TYPE_COIFFEUR
-                        && InputValidator::validatePhone($_POST[PHONE_KEY], PHONE_KEY)
-                        && InputValidator::validateCity($_POST[CITY_KEY], CITY_KEY)
-                        && InputValidator::validateQuartier($_POST[QUARTIER_KEY], QUARTIER_KEY)
-                        && InputValidator::validateName($_POST[STORE_NAME_KEY], STORE_NAME_KEY, 'Votre nom de salon')
-                        && InputValidator::validateWorkingDays($_POST[WORKING_DAYS_KEY], WORKING_DAYS_KEY)
-                        && InputValidator::validateWorkingHours($_POST[WORKING_HOURS_KEY], WORKING_HOURS_KEY)
-                    )
-                    or
-                    (
-                        $_POST[ROLE_KEY] == ROLE_TYPE_CUSTOMER
-                        && InputValidator::validatePhone($_POST[PHONE_KEY], PHONE_KEY)
-                    )
+                        (
+                            $_POST[ROLE_KEY] == ROLE_TYPE_COIFFEUR
+                            && InputValidator::validatePhone($_POST[PHONE_KEY], PHONE_KEY)
+                            && InputValidator::validateCity($_POST[CITY_KEY], CITY_KEY)
+                            && InputValidator::validateQuartier($_POST[QUARTIER_KEY], QUARTIER_KEY)
+                            && InputValidator::validateName($_POST[STORE_NAME_KEY], STORE_NAME_KEY, 'Votre nom de salon')
+                            && InputValidator::validateWorkingDays($_POST[WORKING_DAYS_KEY], WORKING_DAYS_KEY)
+                            && InputValidator::validateWorkingHours($_POST[WORKING_HOURS_KEY], WORKING_HOURS_KEY)
+                        )
+                        or
+                        (
+                            $_POST[ROLE_KEY] == ROLE_TYPE_CUSTOMER
+                            && InputValidator::validatePhone($_POST[PHONE_KEY], PHONE_KEY)
+                        )
                 )
             ) {
                 //if the data is valid
@@ -68,7 +69,7 @@ class HomeController
                 $user->role = $_POST[ROLE_KEY];
                 $user->save();
                 //the image is optional so there is a default value
-                $img_path = upload_image(false, PROFILE_IMG_KEY);
+                $img_path = upload_image(PROFILE_IMG_KEY,false);
                 $img_path = $img_path ? $img_path : IMG_NOT_UPLOADED_KEY;
                 if ($user->role == ROLE_TYPE_CUSTOMER) {
                     //if the user is a customer we create a new record in the customers table

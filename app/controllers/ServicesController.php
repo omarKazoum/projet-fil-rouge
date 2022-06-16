@@ -1,28 +1,35 @@
 <?php
-
 namespace app\controllers;
 
 use app\models\Service;
 use app\models\ServiceRequest;
-use core\InputValidator;
-use core\SessionManager;
-
+use \core\InputValidator;
+use \core\SessionManager;
 class ServicesController
 {
     public function list()
     {
         //TODO: test this logic
         $services=null;
-        switch (SessionManager::getInstance()->getLoggedInUser()->role) {
+        $resultsCount=0;
+        switch (\core\SessionManager::getInstance()->getLoggedInUser()->role) {
             case ROLE_TYPE_CUSTOMER:
-                ;
             case ROLE_TYPE_ADMIN:
-            $services = Service::all();
+                if(isset($_GET['search'])) {
+                    $sw=$_GET['search'];
+                    $services = Service::query()->where('title','LIKE' ,"%$sw%")->orWhere( 'description','LIKE', "%$sw%")->get();
+                }else
+                    $services = Service::all();
                 break;
             case ROLE_TYPE_COIFFEUR:
-                $services = Service::all()->where('coiffeur_id', core\SessionManager::getInstance()->getLoggedInUser()->id);
+                if(isset($_GET['search'])) {
+                    $sw=$_GET['search'];
+                    $services = Service::all()->where('coiffeur_id', \core\SessionManager::getInstance()->getLoggedInUser()->id)->where('title','LIKE' ,"%$sw%")->orWhere( 'description','LIKE', "%$sw%")->get();
+                }else
+                    $services = Service::all()->where('coiffeur_id', \core\SessionManager::getInstance()->getLoggedInUser()->id);
         }
-        view('services/services_list',true,['services'=>$services]);
+        $resultsCount=count($services);
+        view('services/services_list',true,['services'=>$services,'resultsCount'=>$resultsCount]);
     }
     public function addForm(){
         view("services/service_form",true,[
@@ -46,10 +53,10 @@ class ServicesController
                 $service->price = $_POST[SERVICE_PRICE_KEY];
                 $service->category_id = $_POST[SERVICE_CATEGORY_ID_KEY];
                 $service->coiffeur_id = SessionManager::getInstance()->getLoggedInUser()->id;
-                $img_path = upload_image(false, SERVICE_IMG_KEY);
-                $service->img = $img_path ? $img_path : SERVICE_IMG_NOT_UPLOADED_KEY;
+                $img_path = upload_image( SERVICE_IMG_KEY,false);
+                $service->img = $img_path ? $img_path : IMG_NOT_UPLOADED_KEY;
                 $service->save();
-                redirect('/services');
+                redirect(getBaseUrlWithMessage('/services','Service ajouté avec Succès!','success'));
         }else{
             //something is wrong with the inputs
              view("services/service_form",true,[
@@ -67,8 +74,9 @@ class ServicesController
     public function updateForm($id){
         //TODO: check that a service with that id actually exists
         $service = Service::find($id);
-        if(!$service OR  SessionManager::getInstance()->getLoggedInUser()->role!=ROLE_TYPE_CUSTOMER){
-            redirect('/services');
+        $authorized=(SessionManager::getInstance()->getLoggedInUser()->role==ROLE_TYPE_COIFFEUR or SessionManager::getInstance()->getLoggedInUser()->role==ROLE_TYPE_ADMIN );
+        if(!$service OR !$authorized ){
+            redirect(getBaseUrlWithMessage('/services','You are not allowed to update this service','danger'));
         }else view("services/service_form",true,[
             'service_action'=>'update'],['serviceToEdit'=>Service::find($id)]);
     }
@@ -95,21 +103,19 @@ class ServicesController
                 $service->price =  $_POST[SERVICE_PRICE_KEY];
                 $service->category_id = $_POST[SERVICE_CATEGORY_ID_KEY];
                 $service->coiffeur_id = SessionManager::getInstance()->getLoggedInUser()->id;
-                $img_path = upload_image($service->img!=SERVICE_IMG_NOT_UPLOADED_KEY?$service->img:false, SERVICE_IMG_KEY);
+                $img_path = upload_image( SERVICE_IMG_KEY,$service->img!=IMG_NOT_UPLOADED_KEY?$service->img:false);
                 $service->img = $img_path ? $img_path : $service->img;
                 $service->save();
-                redirect('/services');
+                redirect(getBaseUrlWithMessage('/services','Changement bien enregistré!','success'));
         }else{
             //something is wrong with the inputs
             view("services/service_form",true,[
                 'service_action'=>'update'
             ],['serviceToEdit'=>Service::find($_POST[SERVICE_ID_KEY])]);
         }
-
-        echo "update submitted";
     }
     public function delete($serviceId){
-        //todo validate that the setvice with that id actually exists
+        // validate that the setvice with that id actually exists
         // and that the user is the owner of the service
         // or is an admin
         $service = Service::find($serviceId);

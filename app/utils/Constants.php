@@ -1,12 +1,11 @@
 <?php
-//for loggin screen
-const LOGIN_ERROR_KEY='login_error';
 //roles
 const ROLE_TYPE_ADMIN=1;
 const ROLE_TYPE_CUSTOMER=2;
 const ROLE_TYPE_COIFFEUR=3;
 const ROLE_KEY='role';
 //for sign up screen and login screen
+const LOGIN_ERROR_KEY='login_error';
 const USER_NAME_KEY="user_name";
 const PASSWORD_KEY="password";
 const PASSWORD_REPEAT_KEY="password2";
@@ -15,7 +14,7 @@ const LAST_NAME_KEY='last_name';
 const EMAIL_KEY='email';
 const PHONE_KEY='phone';
 const CITY_KEY='city';
-const QUARTIER_KEY='adress';
+const QUARTIER_KEY='quartier';
 const STORE_NAME_KEY='store_name';
 const WORKING_HOURS_KEY='working_hours';
 const WORKING_DAYS_KEY='working_days';
