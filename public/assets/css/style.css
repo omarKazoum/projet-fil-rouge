@@ -27,6 +27,7 @@ body {
 }
 
 .s-btn {
+  white-space: nowrap;
   cursor: pointer;
   box-shadow: 0px 0px 6px 0px #00000042;
   font-weight: bold;

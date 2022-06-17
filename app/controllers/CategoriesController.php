@@ -72,4 +72,11 @@ class CategoriesController
         }
     }
 
+    /**
+     * ajouter une categorie
+     */
+    function add(){
+
+    }
+
 }

@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\Input;
 
 class HomeController
 {
-    public function index()
+    function index()
     {
         if(SessionManager::getInstance()->isLoggedIn()) {
             redirect('/services');
@@ -28,7 +28,6 @@ class HomeController
         }
     }
     function signupSubmit(){
-        $erors=InputValidator::getErrors();
         if(SessionManager::getInstance()->isLoggedIn()) {
             redirect('/services');
         }else {
@@ -70,7 +69,7 @@ class HomeController
                 $user->save();
                 //the image is optional so there is a default value
                 $img_path = upload_image(PROFILE_IMG_KEY,false);
-                $img_path = $img_path ? $img_path : IMG_NOT_UPLOADED_KEY;
+                $img_path = $img_path ? $img_path : PROFILE_IMG_NOT_UPLOADED_KEY;
                 if ($user->role == ROLE_TYPE_CUSTOMER) {
                     //if the user is a customer we create a new record in the customers table
                     $user->img = $img_path;
@@ -110,7 +109,7 @@ class HomeController
             viewNoSidebar('login');
             exit();
         }else{
-            $user=User::where('email',$_POST[EMAIL_KEY])->first();
+            $user=User::query()->where('email',$_POST[EMAIL_KEY])->orWhere('user_name',$_POST[EMAIL_KEY])->first();
             if($user!=null AND password_verify($_POST[PASSWORD_KEY],$user->password_hash)){
                     SessionManager::getInstance()->login($user);
                     redirect('/');
@@ -120,23 +119,99 @@ class HomeController
             }
         }
     }
-    //TODO remove this function
-    function components(){
-        view('components',true);
-    }
     function logout(){
         SessionManager::getInstance()->logout();
         redirect('/');
     }
+
+    /**
+     * show profile page
+     * @return void
+     */
     function profile()
     {
-        //TODO finish this function
-        if (SessionManager::getInstance()->isLoggedIn()) {
-            $user = SessionManager::getInstance()->getLoggedInUser();
-            echo 'profile ';
-            //view('profile', true, ['user' => $user]);
-        } else {
+            view('profile', true,['user'=>SessionManager::getInstance()->getLoggedInUser()]);
+    }
+
+    /**
+     * update the profile of the connected user
+     * @return void
+     */
+    function profileUpdateSubmit()
+    {
+        if(!SessionManager::getInstance()->isLoggedIn()){
             redirect('/');
+            exit;
+
         }
+        $user = SessionManager::getInstance()->getLoggedInUser();
+        //TODO password is hashed before saved so validate match and regex
+        //TODO update the user in session after changes are saved
+        //ignore password if updated is not set
+        if (InputValidator::validateName($_POST[FIRST_NAME_KEY], FIRST_NAME_KEY, 'Votre prénom')
+            and InputValidator::validateName($_POST[LAST_NAME_KEY], LAST_NAME_KEY, 'Votre nom')
+            and InputValidator::validateName($_POST[USER_NAME_KEY], USER_NAME_KEY, 'Votre nom d\'utilisateur')
+            and InputValidator::validateEmail($_POST[EMAIL_KEY], EMAIL_KEY)
+            AND (
+                !isset($_POST[PASSWORD_UPDATE_KEY])
+                OR (
+                    InputValidator::validatePassword($_POST[PASSWORD_KEY], PASSWORD_KEY)
+                    && InputValidator::validatePasswordsMatch($_POST[PASSWORD_KEY], $_POST[PASSWORD_REPEAT_KEY], PASSWORD_REPEAT_KEY)
+                    )
+                )
+            AND InputValidator::validateImageType(PROFILE_IMG_KEY, PROFILE_IMG_KEY)
+            AND (
+                    (
+                        $user->role == ROLE_TYPE_COIFFEUR
+                        && InputValidator::validatePhone($_POST[PHONE_KEY], PHONE_KEY)
+                        && InputValidator::validateCity($_POST[CITY_KEY], CITY_KEY)
+                        && InputValidator::validateQuartier($_POST[QUARTIER_KEY], QUARTIER_KEY)
+                        && InputValidator::validateName($_POST[STORE_NAME_KEY], STORE_NAME_KEY, 'Votre nom de salon')
+                        && InputValidator::validateWorkingDays($_POST[WORKING_DAYS_KEY], WORKING_DAYS_KEY)
+                        && InputValidator::validateWorkingHours($_POST[WORKING_HOURS_KEY], WORKING_HOURS_KEY)
+                    )
+                    or
+                    (
+                        $user->role == ROLE_TYPE_CUSTOMER
+                        && InputValidator::validatePhone($_POST[PHONE_KEY], PHONE_KEY)
+                    )
+            )
+        ) {
+            //if the data is valid
+            $user = User::find(SessionManager::getInstance()->getLoggedInUser()->id);
+            $user->first_name = $_POST[FIRST_NAME_KEY];
+            $user->last_name = $_POST[LAST_NAME_KEY];
+            $user->user_name = $_POST[USER_NAME_KEY];
+            $user->email = $_POST[EMAIL_KEY];
+            if(isset($_POST[PASSWORD_UPDATE_KEY])){
+                $user->password = $_POST[PASSWORD_KEY];
+            }
+            $user->save();
+            //the image is optional so there is a default value
+            if ($user->role == ROLE_TYPE_CUSTOMER) {
+                $customer= Customer::query()->where('user_id',$user->id)->first();
+                $img_path = upload_image(PROFILE_IMG_KEY,($customer->img!=PROFILE_IMG_NOT_UPLOADED_KEY?$customer->img:false));
+                $img_path = $img_path ?: PROFILE_IMG_NOT_UPLOADED_KEY;
+                $customer->img = $img_path;
+                $customer->phone = $_POST[PHONE_KEY];
+                $customer->save();
+            } elseif ($user->role == ROLE_TYPE_COIFFEUR) {
+                $coiffeur =Coiffeur::query()->where('user_id',$user->id)->first(); ;
+                $img_path = upload_image(PROFILE_IMG_KEY,($coiffeur->img!=PROFILE_IMG_NOT_UPLOADED_KEY?$coiffeur->img:false));
+                $img_path = $img_path ?: PROFILE_IMG_NOT_UPLOADED_KEY;
+                $coiffeur->img = $img_path;
+                $coiffeur->phone = $_POST[PHONE_KEY];
+                $coiffeur->city = $_POST[CITY_KEY];
+                $coiffeur->quartier = $_POST[QUARTIER_KEY];
+                $coiffeur->store_title = $_POST[STORE_NAME_KEY];
+                $coiffeur->work_days = $_POST[WORKING_DAYS_KEY];
+                $coiffeur->work_hours = $_POST[WORKING_HOURS_KEY];
+                $coiffeur->save();
+            }
+            SessionManager::getInstance()->login($user);
+            redirect(getBaseUrlWithMessage('profile', 'Votre profil a été mis à jour avec succès', 'success'));
+        }
+        view('profile', true,['user'=>SessionManager::getInstance()->getLoggedInUser()]);
+
     }
 }

@@ -225,10 +225,8 @@ class InputValidator
             $type=explode('/',getimagesize($temp_name)['mime'])[1];
         $isImgSet=isset($_FILES[$imageInputId]);
 
-        $isFormatSupported=in_array($type,CONFIG_ALLOWED_IMAGE_EXTENSIONS);
-
         $isImageTypeValide=(!$imageUploaded OR (
-            $isImgSet && $isFormatSupported
+            $isImgSet && in_array($type,CONFIG_ALLOWED_IMAGE_EXTENSIONS)
         ))  ;
         if(!$isImageTypeValide)
             self::appendError($key,"L'image doit être au format jpg, jpeg, png ou gif");

@@ -8,7 +8,7 @@ const ROLE_KEY='role';
 const LOGIN_ERROR_KEY='login_error';
 const USER_NAME_KEY="user_name";
 const PASSWORD_KEY="password";
-const PASSWORD_REPEAT_KEY="password2";
+const PASSWORD_REPEAT_KEY="password_repeat";
 const FIRST_NAME_KEY='first_name';
 const LAST_NAME_KEY='last_name';
 const EMAIL_KEY='email';
@@ -19,6 +19,9 @@ const STORE_NAME_KEY='store_name';
 const WORKING_HOURS_KEY='working_hours';
 const WORKING_DAYS_KEY='working_days';
 const PROFILE_IMG_KEY='profile_img';
+//for profile screen
+const PASSWORD_UPDATE_KEY='update_password';
+
 //service constants
 const SERVICE_ID_KEY='service_id';
 const SERVICE_REQUEST_DATE_KEY='service_request_date';
@@ -28,7 +31,7 @@ const SERVICE_DESCRIPTION_KEY='service_description';
 const SERVICE_PRICE_KEY='service_price';
 const SERVICE_CATEGORY_ID_KEY='category_id';
 const SERVICE_IMG_KEY='service_img';
-const IMG_NOT_UPLOADED_KEY='not_uploaded';
+const PROFILE_IMG_NOT_UPLOADED_KEY='not_uploaded';
 //service status
 const SERVICE_REQUEST_STATUS_PENDING=1;
 const SERVICE_REQUEST_STATUS_ACCEPTED=2;

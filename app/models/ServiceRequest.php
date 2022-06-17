@@ -10,14 +10,12 @@ class ServiceRequest extends Model
     protected $fillable = [
         'service_id','client_id','status','date','time'
     ];
-    protected $hidden = [
-        'id'
-    ];
+    protected $hidden = ['id'];
     protected $primaryKey= 'id';
     public function service(){
         return $this->belongsTo('app\models\Service');
     }
-    public function client()
+    public function customer()
     {
         return $this->belongsTo('app\models\User', 'client_id');
     }

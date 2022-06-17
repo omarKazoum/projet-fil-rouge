@@ -4,6 +4,7 @@ use core\Route;
 use app\controllers\HomeController;
 
 //TODO::declare here your endpoints and their corresponding controller methods
+
 Route::get('/',[new app\controllers\HomeController(),'index']);
 //services
 Route::get('/services',[new app\controllers\ServicesController(),'list'],SERVICES_ENDPOINT_LABEL);
@@ -23,12 +24,9 @@ Route::post('login',[new app\controllers\HomeController(),'loginSubmit'],AUTHENT
 Route::post('signup',[new app\controllers\HomeController(),'signupSubmit'],AUTHENTICATION_ENDPOINT_LABEL);
 Route::get('logout',[new app\controllers\HomeController(),'logout'],USERS_ENDPOINT_LABEL);
 Route::get('profile',[new app\controllers\HomeController(),'profile'],USERS_ENDPOINT_LABEL);
+Route::post('profile',[new app\controllers\HomeController(),'profileUpdateSubmit'],USERS_ENDPOINT_LABEL);
 Route::setAuthenticationRequired(USERS_ENDPOINT_LABEL);
-//this is for testing
-Route::get('components',[new app\controllers\HomeController(),'components']);
-Route::get('test',[new app\controllers\TestController(), 'testGet']);
-Route::post('test',[new app\controllers\TestController(),'testPost']);
-//categorys
+//categories
 Route::get('/categories',[new app\controllers\CategoriesController(),'index'],CATEGORIES_ENDPOINT_LABEL);
 Route::setAuthenticationRequired(CATEGORIES_ENDPOINT_LABEL);
 

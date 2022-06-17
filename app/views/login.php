@@ -12,7 +12,7 @@
                     </div>
                 <?php } ?>
                 <div class="form-group">
-                    <input type="email" name="<?= EMAIL_KEY ?>" value="<?= $_POST[ EMAIL_KEY]??''?>" class="salon-input" placeholder="Email">
+                    <input type="text" name="<?= EMAIL_KEY ?>" value="<?= $_POST[ EMAIL_KEY]??''?>" class="salon-input" placeholder="Email ou Nom d'utilisateur">
                 </div>
                 <div class="form-group">
                     <input type="password" name="<?= PASSWORD_KEY ?>" value="<?= $_POST[ PASSWORD_KEY]??''?>" class="salon-input" placeholder="Your password ">

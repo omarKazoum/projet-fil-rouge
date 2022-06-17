@@ -47,6 +47,7 @@ body{
   flex-direction: row-reverse;
 }
 .s-btn{
+  white-space: nowrap;
   cursor: pointer;
   @include rounedComponent;
   &.primary{

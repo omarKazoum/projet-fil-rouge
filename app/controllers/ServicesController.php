@@ -54,7 +54,7 @@ class ServicesController
                 $service->category_id = $_POST[SERVICE_CATEGORY_ID_KEY];
                 $service->coiffeur_id = SessionManager::getInstance()->getLoggedInUser()->id;
                 $img_path = upload_image( SERVICE_IMG_KEY,false);
-                $service->img = $img_path ? $img_path : IMG_NOT_UPLOADED_KEY;
+                $service->img = $img_path ? $img_path : PROFILE_IMG_NOT_UPLOADED_KEY;
                 $service->save();
                 redirect(getBaseUrlWithMessage('/services','Service ajouté avec Succès!','success'));
         }else{
@@ -103,7 +103,7 @@ class ServicesController
                 $service->price =  $_POST[SERVICE_PRICE_KEY];
                 $service->category_id = $_POST[SERVICE_CATEGORY_ID_KEY];
                 $service->coiffeur_id = SessionManager::getInstance()->getLoggedInUser()->id;
-                $img_path = upload_image( SERVICE_IMG_KEY,$service->img!=IMG_NOT_UPLOADED_KEY?$service->img:false);
+                $img_path = upload_image( SERVICE_IMG_KEY,$service->img!=PROFILE_IMG_NOT_UPLOADED_KEY?$service->img:false);
                 $service->img = $img_path ? $img_path : $service->img;
                 $service->save();
                 redirect(getBaseUrlWithMessage('/services','Changement bien enregistré!','success'));

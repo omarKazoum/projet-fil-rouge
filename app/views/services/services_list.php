@@ -29,7 +29,7 @@
                 <th scope="col">price</th>
                 <th scope="col">category</th>
                 <th scope="col">nom de coiffeur</th>
-                <th scope="col">Demandes faites</th>
+                <th data-bs-toggle="tooltip" data-bs-placement="top" title="Nombre total reçue par ce service de la part de tous les clients" scope="col">Demandes faites <i class="fa-solid fa-circle-info"></i></th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -39,8 +39,8 @@
                 data-service-hours='<?= $service->coiffeur->work_hours ?>'
                 data-service-days='<?= $service->coiffeur->work_days  ?>'
             >
-            <td >
-                <img style="width:100px;height:80px" src="<?=$service->img!=IMG_NOT_UPLOADED_KEY?uploaded($service->img):img('service_img_place_holder.png') ?>" alt="<?= $service->title?>">
+            <td>
+                <img style="width:100px;height:80px" src="<?=$service->img!=PROFILE_IMG_NOT_UPLOADED_KEY?uploaded($service->img):img('service_img_place_holder.png') ?>" alt="<?= $service->title?>">
             </td>
             <td class="service-title"><?= $service->title ?></td>
             <td><?= $service->description ?></td>
@@ -53,19 +53,23 @@
                     <div class="action-btns">
                                 <!-- supprimer-->
                                 <?php if(\core\SessionManager::getInstance()->getLoggedInUser()->role!=ROLE_TYPE_CUSTOMER){ ?>
-                                    <a href="<?= getUrlFor('services/update/'.$service->id)?>" class="s-btn primary p-1 d-flex justify-content-center align-items-center" title="Modifier ce service"><i class="fa fa-edit"></i>Modifier</a>
+                                    <a href="<?= getUrlFor('services/update/'.$service->id)?>" class="s-btn primary p-1 d-flex justify-content-center align-items-center" title="Modifier ce service">
+                                        <i class="fa fa-edit"></i>Modifier
+                                    </a>
                                 <?php } ?>
                                 <?php if($service->serviceRequests->count()<1 AND \core\SessionManager::getInstance()->getLoggedInUser()->role!=ROLE_TYPE_CUSTOMER){ ?>
-                                    <a href="<?= getUrlFor('services/delete/'.$service->id) ?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center confirm" title="Supprimer ce service"><i class="fa fa-trash" ></i>Supprimer</a>
+                                    <a href="<?= getUrlFor('services/delete/'.$service->id) ?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center confirm" title="Supprimer ce service">
+                                        <i class="fa fa-trash" ></i>Supprimer
+                                    </a>
                                 <?php }?>
                                 <?php if(\core\SessionManager::getInstance()->getLoggedInUser()->role==ROLE_TYPE_CUSTOMER){ ?>
-
-                                    <a  href="#" class="s-btn success p-1 d-flex justify-content-center align-items-center reserve-btn" data-service-id="<?= $service->id?>"><i class="fa fa-shopping-cart" title="Réserver ce service"></i>Réserver</a>
+                                    <a  href="#" class="s-btn success p-1 d-flex justify-content-center align-items-center reserve-btn" data-service-id="<?= $service->id?>">
+                                        <i class="fa fa-shopping-cart" title="Réserver ce service"></i>
+                                        Réserver</a>
                                     <?php } ?>
                     </div>
                 </div>
             </td>
-
             </tr>
         <?php } ?>
         </tbody>
@@ -148,6 +152,9 @@
                document.querySelectorAll('#service-modal input').forEach(function (input) {
                    if (input.name == '<?= SERVICE_REQUEST_DATE_KEY ?>' || input.name == '<?= SERVICE_REQUEST_TIME_KEY ?>') {
                        input.value = '';
+                   if(input.name=='<?= SERVICE_REQUEST_DATE_KEY ?>'){
+                       input.setAttribute('min', new Date().toISOString().split('T')[0]);
+                   }
                    }
                });
            });

@@ -14,9 +14,6 @@ class Category extends Model
         'id'
     ];
     protected $primaryKey= 'id';
-    public function customer(){
-        return $this->hasMany('app\models\ServiceRequest');
-    }
     function services(){
         return $this->hasMany('app\models\Service');
     }

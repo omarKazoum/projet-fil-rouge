@@ -111,7 +111,7 @@ document.querySelector('.time-intervals-wrapper').querySelectorAll('input').forE
     });
 })
 
-
+//unused
 const isTimeIntervalValid=()=>{
     console.log(workingHoursJson);
     let valid=true;
