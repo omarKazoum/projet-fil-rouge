@@ -138,11 +138,11 @@ function getUserImageUrl($user){
     $url=img('profile-avatar.svg');
     if($user->role==ROLE_TYPE_COIFFEUR){
         $imgFromDb=\app\models\Coiffeur::query()->where('user_id',$user->id)->img;
-         $url=$imgFromDb!=IMG_NOT_UPLOADED_KEY ? uploaded($imgFromDb) : img('profile-avatar.svg');
+         $url=$imgFromDb!=PROFILE_IMG_NOT_UPLOADED_KEY ? uploaded($imgFromDb) : img('profile-avatar.svg');
     }else if($user->role==ROLE_TYPE_CUSTOMER){
         $customer=\app\models\Customer::query()->where('user_id',$user->id)->first();
         $imgFromDb=$customer->img;
-        $url=$imgFromDb!=IMG_NOT_UPLOADED_KEY ? uploaded($imgFromDb) : img('profile-avatar.svg');
+        $url=$imgFromDb!=PROFILE_IMG_NOT_UPLOADED_KEY ? uploaded($imgFromDb) : img('profile-avatar.svg');
     }
     return $url;
 }
