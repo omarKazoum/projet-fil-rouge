@@ -7,12 +7,12 @@ use core\SessionManager;
  * you can add your routes to <b>web.php</b> file below
  */
 class Route{
-    private static $protctedPages=[];
+    private static $protectedPages=[];
 
     private static $getPaths=[];
     private static $postPaths=[];
     private static $args=[];
-    private static $currentRuquestLabel='';
+    private static $currentRequestLabel='';
 
     /**
      * @param $pathIndication a string expression like /users/{d}
@@ -69,9 +69,9 @@ class Route{
         }
         foreach ($paths as $uriIndication => $uriConfig){
             if(self::match($uriIndication,$requestUri)){
-                self::$currentRuquestLabel=$uriConfig['label'];
+                self::$currentRequestLabel=$uriConfig['label'];
                 $foundRout=true;
-                if(!in_array(self::$currentRuquestLabel,self::$protctedPages) OR  SessionManager::getInstance()->isLoggedIn()){
+                if(!in_array(self::$currentRequestLabel,self::$protectedPages) OR  SessionManager::getInstance()->isLoggedIn()){
                     call_user_func_array($uriConfig['callback'],self::$args);
                 }else
                     redirect();
@@ -99,10 +99,10 @@ class Route{
      * @return bool
      */
     public static function isRequestFor($endpointLabel):bool{
-        return self::$currentRuquestLabel===$endpointLabel;
+        return self::$currentRequestLabel===$endpointLabel;
     }
     static function getCurrentRequestLabel(){
-        return self::$currentRuquestLabel;
+        return self::$currentRequestLabel;
     }
     /**
      * @param $str
@@ -117,6 +117,6 @@ class Route{
 
     }
     public static function setAuthenticationRequired($endpointLabel){
-        self::$protctedPages[]=$endpointLabel;
+        self::$protectedPages[]=$endpointLabel;
     }
 }

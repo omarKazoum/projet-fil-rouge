@@ -10,7 +10,7 @@ use core\InputValidator;
 use core\SessionManager;
 use Symfony\Component\Console\Input\Input;
 
-class HomeController
+class UserController
 {
     function index()
     {
@@ -20,7 +20,7 @@ class HomeController
             view('landing', false);
         }
     }
-    function sign_up(){
+    function signUp(){
         if(SessionManager::getInstance()->isLoggedIn()) {
             redirect('/services');
         }else {

@@ -58,7 +58,7 @@
                                     </a>
                                 <?php } ?>
                                 <?php if($service->serviceRequests->count()<1 AND \core\SessionManager::getInstance()->getLoggedInUser()->role!=ROLE_TYPE_CUSTOMER){ ?>
-                                    <a href="<?= getUrlFor('services/delete/'.$service->id) ?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center confirm" title="Supprimer ce service">
+                                    <a href="<?= getUrlFor('services/delete/'.$service->id) ?>" class="s-btn danger p-1 d-flex justify-content-center align-items-center confirm" data-confirm-msg="Etes vous sur de vouloir supprimer ce service ?" title="Supprimer ce service">
                                         <i class="fa fa-trash" ></i>Supprimer
                                     </a>
                                 <?php }?>

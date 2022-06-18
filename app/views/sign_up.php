@@ -117,10 +117,10 @@
                     </label>
                   <label for="client" class="salon-label">
                       Client
-                      <input type="radio"   <?= isset($_POST[ROLE_KEY]) && $_POST[ROLE_KEY]==ROLE_TYPE_CUSTOMER?"checked":'' ?> value="<?= ROLE_TYPE_CUSTOMER ?>" name="<?= ROLE_KEY?>" id="client">
+                      <input type="radio"   <?= ((isset($_POST[ROLE_KEY]) && $_POST[ROLE_KEY]==ROLE_TYPE_CUSTOMER) || !isset($_POST[ROLE_KEY]) )?"checked":'' ?> value="<?= ROLE_TYPE_CUSTOMER ?>" name="<?= ROLE_KEY?>" id="client">
                 </label>
                 </div>
-                <div class="coiffeur-option <?= isset($_POST[ROLE_KEY]) && $_POST[ROLE_KEY]==ROLE_TYPE_CUSTOMER?"hidden":''  ?>">
+                <div class="coiffeur-option <?= ((isset($_POST[ROLE_KEY]) && $_POST[ROLE_KEY]==ROLE_TYPE_CUSTOMER) || !isset($_POST[ROLE_KEY]) )?"hidden":'' ?>">
                     <div class="form-group">
                         <label for="<?= CITY_KEY ?>" class="salon-label fs-6">Ville</label>
                         <select name="<?= CITY_KEY?>" data-old-value="<?= $_POST[CITY_KEY]??0 ?>" id="<?= CITY_KEY?>" class="salon-input"
@@ -196,4 +196,17 @@
         </div>
     </div>
     <script src="<?= js('user_form.js') ?>"></script>
+    <script>
+        /*let foundEnabled=false;
+        document.getElementsByName("<?= ROLE_KEY?>").forEach(function(el){
+            if(el.hasAttribute("checked")){
+                foundEnabled=true;
+            }
+            });
+        console.log("found enabled checkbox ",foundEnabled);
+        if(!foundEnabled){
+            document.getElementById("client").setAttribute("checked","checked")
+            document.getElementById("client").onchange();
+        }*/
+    </script>
 </div>

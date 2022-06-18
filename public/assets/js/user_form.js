@@ -56,6 +56,7 @@ const updateDaysInputFromHiddenInput=()=>{
         document.querySelector(`.day-label[for="day-${day}"] input`).checked=true;
     });
 }
+if(document.querySelector('input[name="working_days"]').value!='')
 updateDaysInputFromHiddenInput();
 
 /////////////////////////////////////////

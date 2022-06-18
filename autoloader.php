@@ -53,3 +53,5 @@ $capsule->bootEloquent();
 //diagram de séquence
 //diagram de classes
 //diagram de cas d'utilisation
+
+

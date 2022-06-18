@@ -1,7 +1,7 @@
 const REGEX_USER_NAME=/^[a-zA-Z0-9]{3,30}$/;
 const REGEX_PASSWORD=/^.{6,}$/;
 /**
- *
+ *  enables error message on input
  * @param el HTMLInput element to make valid or invalid
  * @param enable
  */
