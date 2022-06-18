@@ -42,7 +42,7 @@ $enableSearch=in_array(\core\Route::getCurrentRequestLabel(),[SERVICE_REQUESTS_E
         </ul>
         <?php if($enableSearch){?>
             <form class="form-inline my-2 my-lg-0 d-flex gap-1" action="<?= getSearchActionLink() ?>" method="GET">
-                <input class="form-control mr-sm-2 py-0"
+                <input class="form-control mr-sm-2 py-0 my-2 my-sm-0"
                        name="search"
                        type="search"
                        placeholder="<?= getSearchPlaceHolderText() ?>"

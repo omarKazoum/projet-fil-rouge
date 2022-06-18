@@ -52,8 +52,6 @@ class CategoriesController
     }
     function delete($categoryId)
     {
-        //TODO:: check if category has no services
-        //TODO: delete category
         $sm =SessionManager::getInstance();
         $role=$sm->isLoggedIn() ?$sm->getLoggedInUser()->role:0;
         $category=Category::find($categoryId);

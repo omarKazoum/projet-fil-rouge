@@ -195,5 +195,5 @@
             </form>
         </div>
     </div>
-    <script src="<?= js('signup.js') ?>"></script>
+    <script src="<?= js('user_form.js') ?>"></script>
 </div>

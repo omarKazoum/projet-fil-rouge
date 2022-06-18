@@ -9,7 +9,6 @@ class ServicesController
 {
     public function list()
     {
-        //TODO: test this logic
         $services=null;
         $resultsCount=0;
         switch (\core\SessionManager::getInstance()->getLoggedInUser()->role) {
@@ -72,7 +71,6 @@ class ServicesController
      * @return void
      */
     public function updateForm($id){
-        //TODO: check that a service with that id actually exists
         $service = Service::find($id);
         $authorized=(SessionManager::getInstance()->getLoggedInUser()->role==ROLE_TYPE_COIFFEUR or SessionManager::getInstance()->getLoggedInUser()->role==ROLE_TYPE_ADMIN );
         if(!$service OR !$authorized ){
@@ -81,7 +79,7 @@ class ServicesController
             'service_action'=>'update'],['serviceToEdit'=>Service::find($id)]);
     }
     public function updateSubmit(){
-        //todo: check that the service id is valid and that the user has permission to do this action
+        // check that the service id is valid and that the user has permission to do this action
         // check that data is valid then update otherwise redirect to form with some error message
         if(!InputValidator::validateServiceId($_POST[SERVICE_ID_KEY],SERVICE_ID_KEY)) {
             redirect('/services');
@@ -143,7 +141,6 @@ class ServicesController
                 //if service id is valid;
                 $serviceRequest = new ServiceRequest();
                 //TODO::check if the time is valid for this barber
-
                 //TODO:: check that this user does not already have a pending request for this service
                 $serviceRequest->date = $_POST[SERVICE_REQUEST_DATE_KEY];
                 $serviceRequest->time =$_POST[SERVICE_REQUEST_TIME_KEY]; ;

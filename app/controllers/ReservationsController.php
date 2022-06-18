@@ -37,7 +37,6 @@ class ReservationsController
         $sm =SessionManager::getInstance();
         $status=0;
         $message='';
-        //TODO::cancel reservation
         $service_request = ServiceRequest::find($service_request_id);
         $role=$sm->isLoggedIn() ?$sm->getLoggedInUser()->role:0;
         if($sm->isLoggedIn() && $service_request &&

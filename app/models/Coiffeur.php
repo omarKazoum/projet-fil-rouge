@@ -8,9 +8,12 @@ class Coiffeur extends Model
 {
     public $timestamps=false;
     protected $fillable = [
-        'city','quartier',
-        'phone','store_title',
-        'img','working_hours',
+        'city',
+        'quartier',
+        'phone',
+        'store_title',
+        'img',
+        'working_hours',
         'working_days'
     ];
     protected $hidden = [

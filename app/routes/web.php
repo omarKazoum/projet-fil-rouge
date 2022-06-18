@@ -3,7 +3,7 @@
 use core\Route;
 use app\controllers\HomeController;
 
-//TODO::declare here your endpoints and their corresponding controller methods
+//declare here your endpoints and their corresponding controller methods
 
 Route::get('/',[new app\controllers\HomeController(),'index']);
 //services

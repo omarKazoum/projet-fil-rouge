@@ -5,8 +5,8 @@
                 Mon profile
         </div>
     </div>
-    <div class="row">
-            <form class="activate-validation" action="<?= getUrlFor('profile')?>" method="post" enctype="multipart/form-data">
+    <div class="row mt-5">
+            <form class="activate-validation w-75 mx-auto" action="<?= getUrlFor('profile')?>" method="post" enctype="multipart/form-data">
                 <?php if(\core\InputValidator::hasErrors()){?>
                     <div class="alert alert-danger">
                         <ul class="m-0">
@@ -108,7 +108,7 @@
                         <label for="<?= PHONE_KEY ?>" class="salon-label">Votre numéro de téléphone</label>
                         <input type="text"
                                name="<?= PHONE_KEY ?>"
-                               value="<?= $_POST[ PHONE_KEY]??($user->role==ROLE_TYPE_COIFFEUR?$user->coiffeur->phone:$user->customer->phone) ?>"
+                               value="<?= ($user->role==ROLE_TYPE_COIFFEUR?$user->coiffeur->phone:$user->customer->phone) ?>"
                                id="<?= PHONE_KEY ?>"
                                class="salon-input"
                                placeholder="Numéro de tel"
@@ -124,73 +124,75 @@
                             <input type="file" name="<?= PROFILE_IMG_KEY?>" id="<?= PROFILE_IMG_KEY?>" class="pick-img__input">
                         </label>
                     </div>
-                    <?php if($user->role==ROLE_TYPE_COIFFEUR):?>
+                    <?php if($user->role==ROLE_TYPE_COIFFEUR):
+                        $coiffeur=$user->coiffeur;
+                        ?>
                         <div class="coiffeur-option">
-                    <div class="form-group">
-                        <label for="<?= CITY_KEY ?>" class="salon-label fs-6">Ville</label>
-                        <select name="<?= CITY_KEY?>" data-old-value="<?= $_POST[CITY_KEY]??0 ?>" id="<?= CITY_KEY?>" class="salon-input"
-                                data-validate-skip="1"
-                                data-validate="1"
-                                data-validate-not-equal="0"
-                                data-validate-message="Choisissez une ville">
-                            <option value="0">Selectionner une ville</option>
-                            <!--to do insert here the list of cities-->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="<?= QUARTIER_KEY ?>" class="salon-label">Quartier</label>
-                        <input
-                            value="<?= $_POST[QUARTIER_KEY]??''?>"
-                            data-validate-skip="1"
-                            data-validate="1"
-                            data-validate-pattern="<?= stripAllSlashes(\core\InputValidator::NAME_PATTERN) ?>"
-                            data-validate-message="le nom de quartier doit contenir entre 3 et 20 characters"
-                            name="<?= QUARTIER_KEY?>"
-                            id="<?= QUARTIER_KEY?>"
-                            class="salon-input"
-                            placeholder="le nom de quartier ou est situé votre salon">
-                    </div>
-                    <div class="form-group">
-                        <label for="<?= STORE_NAME_KEY ?>" class="salon-label">Nom de salon</label>
-                        <input
-                            value="<?= $_POST[STORE_NAME_KEY]??''?>"
-                            data-validate-skip="1"
-                            data-validate="1"
-                            data-validate-pattern="<?= stripAllSlashes(\core\InputValidator::NAME_PATTERN) ?>"
-                            data-validate-message="le nom de salon doit contenir entre 3 et 20 characters"
-                            name="<?= STORE_NAME_KEY ?>"
-                            id="<?= STORE_NAME_KEY ?>"
-                            class="salon-input"
-                            placeholder="taper le nom de votre beau salon">
-                    </div>
-                    <div class="form-group">
-                        <div class="salon-label">
-                            Jours d'ouverture:
-                        </div>
-                        <div class="days">
+                            <div class="form-group">
+                                <label for="<?= CITY_KEY ?>" class="salon-label fs-6">Ville</label>
+                                <select name="<?= CITY_KEY?>" data-old-value="<?= $coiffeur->city ?>" id="<?= CITY_KEY?>" class="salon-input"
+                                        data-validate-skip="1"
+                                        data-validate="1"
+                                        data-validate-not-equal="0"
+                                        data-validate-message="Choisissez une ville">
+                                    <option value="0">Selectionner une ville</option>
+                                    <!--to do insert here the list of cities-->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="<?= QUARTIER_KEY ?>" class="salon-label">Quartier</label>
+                                <input
+                                    value="<?= $coiffeur->quartier ?>"
+                                    data-validate-skip="1"
+                                    data-validate="1"
+                                    data-validate-pattern="<?= stripAllSlashes(\core\InputValidator::NAME_PATTERN) ?>"
+                                    data-validate-message="le nom de quartier doit contenir entre 3 et 20 characters"
+                                    name="<?= QUARTIER_KEY?>"
+                                    id="<?= QUARTIER_KEY?>"
+                                    class="salon-input"
+                                    placeholder="le nom de quartier ou est situé votre salon">
+                            </div>
+                            <div class="form-group">
+                                <label for="<?= STORE_NAME_KEY ?>" class="salon-label">Nom de salon</label>
+                                <input
+                                    value='<?= $coiffeur->store_title ?>'
+                                    data-validate-skip="1"
+                                    data-validate="1"
+                                    data-validate-pattern="<?= stripAllSlashes(\core\InputValidator::NAME_PATTERN) ?>"
+                                    data-validate-message="le nom de salon doit contenir entre 3 et 20 characters"
+                                    name="<?= STORE_NAME_KEY ?>"
+                                    id="<?= STORE_NAME_KEY ?>"
+                                    class="salon-input"
+                                    placeholder="taper le nom de votre beau salon">
+                            </div>
+                            <div class="form-group">
+                                <div class="salon-label">
+                                    Jours d'ouverture:
+                                </div>
+                                <div class="days">
 
-                        </div>
-                        <input type="hidden" name="<?= WORKING_DAYS_KEY?>" value="<?= $_POST[WORKING_DAYS_KEY]??''?>">
-                    </div>
-                    <div class="form-group">
-                        <div class="time-intervals-picker">
-                            <div class="salon-label">
-                                Horaires d'ouverture:
-                            </div>
-                            <div class="time-intervals-wrapper">
-                            </div>
-                            <div class="interval-btns">
-                                <div class="s-btn primary add-interval-btn ">
-                                    +
                                 </div>
-                                <div class="s-btn primary minus-interval-btn ">
-                                    -
+                                <input type="hidden" name="<?= WORKING_DAYS_KEY?>" value="<?= $coiffeur->work_days?>">
+                                </div>
+                            <div class="form-group">
+                                <div class="time-intervals-picker">
+                                    <div class="salon-label">
+                                        Horaires d'ouverture:
+                                    </div>
+                                    <div class="time-intervals-wrapper">
+                                    </div>
+                                    <div class="interval-btns">
+                                        <div class="s-btn primary add-interval-btn ">
+                                            +
+                                        </div>
+                                        <div class="s-btn primary minus-interval-btn ">
+                                            -
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="<?= WORKING_HOURS_KEY?>" value="<?= htmlspecialchars($coiffeur->work_hours) ?>">
                                 </div>
                             </div>
-                            <input type="hidden" name="<?= WORKING_HOURS_KEY?>" value="<?= $_POST[WORKING_HOURS_KEY]??''?>">
                         </div>
-                    </div>
-                </div>
                     <?php endif;?>
                 <?php endif; ?>
                 <div class="form-group">
@@ -201,7 +203,7 @@
             </form>
     </div>
     </div>
-    <script src="<?= js('signup.js') ?>"></script>
+    <script src="<?= js('user_form.js') ?>"></script>
     <script>
         document.querySelector('#update_password').addEventListener('change', function (e) {
                 hidePasswordFileds(!e.target.checked);

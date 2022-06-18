@@ -1,8 +1,7 @@
 <?php
 use Illuminate\Database\Capsule\Manager as Capsule;
-Capsule::schema()->create('customers',function ($table){
-    //TODO:: add primary key
-    $table->integer('user_id');
+Capsule::schema()->create('customers',function (\Illuminate\Database\Schema\Blueprint $table){
+    $table->integer('user_id')->primary();
     $table->string('phone');
     $table->string('img');
 });

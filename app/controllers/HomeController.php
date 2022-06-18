@@ -91,7 +91,6 @@ class HomeController
                     $coiffeur->img = $img_path;
                     $coiffeur->save();
                 }
-                //TODO redirect to index page
                 SessionManager::getInstance()->login($user);
                 redirect(getBaseUrlWithMessage('services', 'Vous êtes bien inscrit', 'success'));
             } else
@@ -104,7 +103,6 @@ class HomeController
         viewNoSidebar('login');
     }
     function loginSubmit(){
-        //TODO login the user and redirect to the dashboard
         if(!InputValidator::areAllFieldsSet([EMAIL_KEY,PASSWORD_KEY],'POST')){
             viewNoSidebar('login');
             exit();
@@ -142,11 +140,8 @@ class HomeController
         if(!SessionManager::getInstance()->isLoggedIn()){
             redirect('/');
             exit;
-
         }
         $user = SessionManager::getInstance()->getLoggedInUser();
-        //TODO password is hashed before saved so validate match and regex
-        //TODO update the user in session after changes are saved
         //ignore password if updated is not set
         if (InputValidator::validateName($_POST[FIRST_NAME_KEY], FIRST_NAME_KEY, 'Votre prénom')
             and InputValidator::validateName($_POST[LAST_NAME_KEY], LAST_NAME_KEY, 'Votre nom')
@@ -159,7 +154,7 @@ class HomeController
                     && InputValidator::validatePasswordsMatch($_POST[PASSWORD_KEY], $_POST[PASSWORD_REPEAT_KEY], PASSWORD_REPEAT_KEY)
                     )
                 )
-            AND InputValidator::validateImageType(PROFILE_IMG_KEY, PROFILE_IMG_KEY)
+            AND (!isset($_FILES[PROFILE_IMG_KEY]) || InputValidator::validateImageType(PROFILE_IMG_KEY, PROFILE_IMG_KEY))
             AND (
                     (
                         $user->role == ROLE_TYPE_COIFFEUR
@@ -175,6 +170,9 @@ class HomeController
                         $user->role == ROLE_TYPE_CUSTOMER
                         && InputValidator::validatePhone($_POST[PHONE_KEY], PHONE_KEY)
                     )
+                or
+                    $user->role == ROLE_TYPE_ADMIN
+
             )
         ) {
             //if the data is valid

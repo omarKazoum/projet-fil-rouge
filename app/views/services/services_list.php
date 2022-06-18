@@ -1,10 +1,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="page-title col-9 col-md-10">
-        Services
+            Services
         </div>
         <div class="col-3 col-md-2">
-        <?php if(\core\SessionManager::getInstance()->getLoggedInUser()->role==ROLE_TYPE_CUSTOMER){ ?>
+        <?php if(\core\SessionManager::getInstance()->getLoggedInUser()->role==ROLE_TYPE_COIFFEUR){ ?>
             <a href="<?= getUrlFor('services/add')?>" class="s-btn primary wrap col-3 col-md-2">
                 <i class="fa fa-plus"></i>Add Service</a>
         <?php }?>

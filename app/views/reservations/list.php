@@ -42,7 +42,6 @@ $role=\core\SessionManager::getInstance()->getLoggedInUser()->role;
                         <td><?= $reservation->service->user->user_name ?></td>
                         <td class="reservation-status"><?= getServiceStatusString($reservation->status) ?></td>
                         <td>
-                            <!-- TODO:: change icons and btns size -->
                             <div class="action-btns-wrapper">
                                 <div class="action-btns">
                                 <?php if($role!=ROLE_TYPE_CUSTOMER && $reservation->status!=SERVICE_REQUEST_STATUS_ACCEPTED):?>

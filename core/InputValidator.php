@@ -7,17 +7,15 @@ use app\models\User;
 require_once $_SERVER['DOCUMENT_ROOT']."/../autoloader.php";
 class InputValidator
 {
-
     public const ERRORS_KEY = 'errors';
-    public const SERVICE_TITLE_PATTERN = "/^([\w ]{3,})$/";
+    public const SERVICE_TITLE_PATTERN = "/^([a-zA-Z0-9_]{3,}\s?)+([a-zA-Z0-9_]{2,}\s?)*$/";
     private const WORKING_HOURS_PATTERN='/^\[\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\](\,\[(\"[0-2][0-9]:[0-5][0-9]\")\,(\"[0-2][0-9]:[0-5][0-9]\")\])*\]$/';
     private const WORKING_DAYS_PATTERN="/^(\[[0-6](\,[0-6]){0,6}\])?$/";
-    const DESCRIPTION_PATTERN = "/^[a-zA-Z0-9\s]{0,255}$/";
+    const DESCRIPTION_PATTERN = "/^([a-zA-Z0-9_']{2,}\s?)+([a-zA-Z0-9_']{2,}\s?)*$/";
     const PRICE_PATTERN = "/^[0-9]{2,4}$/";
     const CATEGORY_TITLE_PATTERN = "/^([\w ]{3,})$/";
     const CITY_NAME_REGEX = "/^([\w ]{3,})$/";
     public static $errors_array=[];
-    //public  const INPUT_VALIDATOR_ERRORS='errors';
     public  const PASSWORD_PATTERN='/^.{6,100}$/';
     public  const EMAIL_PATTERN='/^\w+@\w+(\.\w+)+$/';
     public  const PHONE_PATTERN='/^\+{0,1}(212)|0[658]\d{8}$/';
@@ -132,6 +130,14 @@ class InputValidator
             self::$errors_array[$key]=$inputLabel." doit contenir au moins 3 caractères";
         return $valid;
     }
+    //TODO implement this function
+    public static function validateUserNameNotTaken($name, $key)
+        {
+            $valid=User::query()->where('user_name',$name)->count()==0;
+            if(!$valid)
+                self::$errors_array[$key]=" Nom d'utilisateur déjà pris";
+            return $valid;
+        }
 
     static function appendError($key,$message){
         if(!isset(self::$errors_array[$key]))
@@ -219,11 +225,13 @@ class InputValidator
     }
 
     public static function validateImageType(mixed $imageInputId, string $key):bool{
-        $temp_name=$_FILES[$imageInputId]['tmp_name'];
+        $isImgSet=isset($_FILES[$imageInputId]);
+        $temp_name=null;
+        if($isImgSet)
+            $temp_name=$_FILES[$imageInputId]['tmp_name'];
         $imageUploaded=$temp_name!='';
         if($imageUploaded)
             $type=explode('/',getimagesize($temp_name)['mime'])[1];
-        $isImgSet=isset($_FILES[$imageInputId]);
 
         $isImageTypeValide=(!$imageUploaded OR (
             $isImgSet && in_array($type,CONFIG_ALLOWED_IMAGE_EXTENSIONS)

@@ -135,16 +135,21 @@ function getServiceStatusString(int $status):string{
     }
 }
 function getUserImageUrl($user){
+    try{
     $url=img('profile-avatar.svg');
     if($user->role==ROLE_TYPE_COIFFEUR){
-        $imgFromDb=\app\models\Coiffeur::query()->where('user_id',$user->id)->img;
+        $imgFromDb=\app\models\Coiffeur::find($user->id)->img;
          $url=$imgFromDb!=PROFILE_IMG_NOT_UPLOADED_KEY ? uploaded($imgFromDb) : img('profile-avatar.svg');
     }else if($user->role==ROLE_TYPE_CUSTOMER){
-        $customer=\app\models\Customer::query()->where('user_id',$user->id)->first();
+        $customer=\app\models\Customer::find($user->id);
         $imgFromDb=$customer->img;
         $url=$imgFromDb!=PROFILE_IMG_NOT_UPLOADED_KEY ? uploaded($imgFromDb) : img('profile-avatar.svg');
     }
     return $url;
+    }catch (\Exception $e){
+        echo "Error: ".$e->getMessage();
+        return img('profile-avatar.svg');
+    }
 }
 function getCapsule(){
 

@@ -8,6 +8,7 @@ if (!defined('AUTO_LOAD_CALLED')) {
     require_once 'core/functions.php';
     require_once 'app/routes/web.php';
     require_once 'app/routes/api.php';
+
     define('AUTO_LOAD_CALLED', true);
 }
 function load_class($className){
